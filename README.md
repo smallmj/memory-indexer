@@ -6,6 +6,10 @@
 
 ## 更新日志
 
+### v1.0.1 (2026-03-12)
+- 🐛 fix: 修复搜索结果重复显示的 bug
+- 📁 refactor: 索引数据目录从 memory-index/ 移到 skills/memory-indexer/data/
+
 ### v1.0.0 (2026-03-12)
 - ✅ 首次发布
 - ✅ 自动关键词提取（jieba 中文分词）
