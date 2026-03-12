@@ -111,6 +111,10 @@ pip install -r requirements.txt
 
 # 3. 首次运行
 python3 memory-indexer.py status
+
+# 4. （可选）会话备份与精简
+#    每次 heartbeat 自动运行，也可手动执行：
+python3 session_backup.py
 ```
 
 ### 更新
