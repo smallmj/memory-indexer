@@ -2,7 +2,7 @@
 
 > Short-term memory keyword indexing tool for AI Agent long-term memory
 
-**Version**: v1.0.7 | [中文](./README.md)
+**Version**: v1.0.8 | [中文](./README.md)
 
 ## Introduction
 
