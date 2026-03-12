@@ -2,7 +2,7 @@
 
 > Short-term memory keyword indexing tool for AI Agent long-term memory
 
-**Version**: v1.0.5 | [中文](./README.md)
+**Version**: v1.0.7 | [中文](./README.md)
 
 ## Introduction
 
@@ -122,7 +122,7 @@ uv run python skills/memory-indexer/session_backup.py
 
 ### Hook: Auto-search on New Conversation
 
-Starting from v1.0.5, provides OpenClaw Hook `memory-indexer-on-new` to automatically search related memories when a new conversation starts.
+Starting from v1.0.7, provides OpenClaw Hook `memory-indexer-on-new` to automatically search related memories when a new conversation starts.
 
 **Install Hook:**
 

@@ -2,7 +2,7 @@
 
 > 短期记忆关键词索引工具，为 AI Agent 提供长期记忆能力
 
-**版本**: v1.0.5 | [English](./README_EN.md) | 中文
+**版本**: v1.0.7 | [English](./README_EN.md) | 中文
 
 ## 简介
 
@@ -122,7 +122,7 @@ uv run python skills/memory-indexer/session_backup.py
 
 ### Hook: 新对话自动搜索记忆
 
-从 v1.0.5 开始，提供 OpenClaw Hook `memory-indexer-on-new`，在新对话开始时自动搜索相关记忆。
+从 v1.0.7 开始，提供 OpenClaw Hook `memory-indexer-on-new`，在新对话开始时自动搜索相关记忆。
 
 **安装 Hook：**
 

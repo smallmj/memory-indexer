@@ -2,7 +2,19 @@
 
 ---
 
-## v1.0.5 (2026-03-12)
+## v1.0.7 (2026-03-13)
+
+### English
+- 🔧 fix: session_backup.py 改进消息提取，过滤 System: 和 JSON 元数据，只保留真正的用户消息
+- ✨ feat: memory-indexer.py 支持 --keywords 参数自定义关键词提取数量
+
+### 中文
+- 🔧 fix: session_backup.py 改进消息提取，过滤 System: 和 JSON 元数据，只保留真正的用户消息
+- ✨ feat: memory-indexer.py 支持 --keywords 参数自定义关键词提取数量
+
+---
+
+## v1.0.6 (2026-03-12)
 
 ### English
 - ⚙️ config: install.sh now includes Hook installation (memory-indexer-on-new)
