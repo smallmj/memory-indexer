@@ -2,6 +2,26 @@
 
 ---
 
+## v1.1.0 (2026-03-12)
+
+### English
+- 🎨 feat: Add `hooks/memory-indexer-on-new` - OpenClaw hook for auto-searching memories on new conversation
+  - Location: `~/.openclaw/hooks/memory-indexer-on-new/`
+  - Listens for `/new` command, automatically calls memory-indexer to search
+  - Enabled by default, takes effect after gateway restart
+- 🔄 integration: Session backup now runs via heartbeat (not cron - the cron task was misconfigured)
+- 🐛 fix: Removed erroneous cron task "session精简" which only sent a message without executing the script
+
+### 中文
+- 🎨 feat: 新增 `hooks/memory-indexer-on-new` - 新对话自动搜索记忆的 OpenClaw Hook
+  - 位置：`~/.openclaw/hooks/memory-indexer-on-new/`
+  - 监听 `/new` 命令，自动调用 memory-indexer 搜索相关记忆
+  - 默认启用，gateway 重启后生效
+- 🔄 integration: Session 备份改为通过 heartbeat 执行（而非 cron，原 cron 任务配置错误）
+- 🐛 fix: 删除错误的 cron 任务"session精简"（只发消息不执行脚本）
+
+---
+
 ## v1.0.4 (2026-03-12)
 
 ### English
