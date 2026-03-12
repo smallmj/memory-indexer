@@ -2,17 +2,9 @@
 
 > Short-term memory keyword indexing tool for AI Agents
 
-**Version**: v1.0.0 | [中文](./README.md) | English
+**Version**: v1.0.1 | [中文](./README.md) | English
 
-## Changelog
-
-### v1.0.0 (2026-03-12)
-- ✅ Initial release
-- ✅ Automatic keyword extraction (jieba Chinese segmentation)
-- ✅ Keyword index system
-- ✅ Multi-keyword search (AND/OR mode)
-- ✅ Related discovery
-- ✅ Timeline view
+## Introduction
 - ✅ Active recall
 - ✅ Memory summary
 - ✅ Important memory marking

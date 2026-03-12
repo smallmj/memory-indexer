@@ -1,10 +1,37 @@
-# 更新日志
+# Changelog / 更新日志
+
+---
 
 ## v1.0.1 (2026-03-12)
+
+### English
+- 🐛 fix: Fix duplicate search results display bug
+- 📁 refactor: Move index data directory to skills/memory-indexer/data/
+
+### 中文
 - 🐛 fix: 修复搜索结果重复显示的 bug
 - 📁 refactor: 索引数据目录移到 skills/memory-indexer/data/
 
+---
+
 ## v1.0.0 (2026-03-12)
+
+### English
+- ✅ Initial release
+- ✅ Automatic keyword extraction (jieba Chinese segmentation)
+- ✅ Keyword index system
+- ✅ Multi-keyword search (AND/OR mode)
+- ✅ Related discovery
+- ✅ Timeline view
+- ✅ Proactive recall
+- ✅ Memory summary
+- ✅ Important memory star
+- ✅ Incremental sync
+- ✅ Cleanup invalid indexes
+- ✅ Importable API
+- ✅ Install/update scripts
+
+### 中文
 - ✅ 首次发布
 - ✅ 自动关键词提取（jieba 中文分词）
 - ✅ 关键词索引系统
