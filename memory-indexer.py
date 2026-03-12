@@ -119,7 +119,7 @@ def extract_keywords(text: str, topk: int = 10) -> list:
     
     return keywords
 
-def add_memory(content: str, manual_tags: list = None):
+def add_memory(content: str, manual_tags: list = None, topk: int = 10):
     """添加记忆"""
     ensure_memory_dir()
     
@@ -133,8 +133,8 @@ def add_memory(content: str, manual_tags: list = None):
         f.write(f"# 短期记忆 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         f.write(f"{content}\n")
     
-    # 提取关键词
-    auto_keywords = extract_keywords(content)
+    # 提取关键词（支持自定义数量）
+    auto_keywords = extract_keywords(content, topk=topk)
     all_tags = list(set((manual_tags or []) + auto_keywords))
     
     # 更新索引
@@ -650,17 +650,18 @@ def main():
     parser.add_argument("args", nargs="*", help="参数")
     parser.add_argument("--watch", "-w", action="store_true", help="监控模式（增量同步）")
     parser.add_argument("--and", dest="use_and", action="store_true", help="AND 模式搜索（所有关键词都匹配）")
+    parser.add_argument("--keywords", "-k", type=int, default=10, help="关键词提取数量（默认10）")
     
     args = parser.parse_args()
     command = args.command
     
     if command == "add":
         if len(args.args) < 1:
-            print("用法: python3 memory-indexer.py add \"记忆内容\" [标签1 标签2 ...]")
+            print("用法: python3 memory-indexer.py add \"记忆内容\" [标签1 标签2 ...] [--keywords 20]")
             sys.exit(1)
         content = args.args[0]
         tags = args.args[1:] if len(args.args) > 1 else []
-        add_memory(content, tags)
+        add_memory(content, tags, topk=args.keywords)
     
     elif command == "search":
         if len(args.args) < 1:

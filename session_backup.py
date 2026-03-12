@@ -24,7 +24,7 @@ MAX_SIZE_KB = 10  # 精简后最大 10KB
 
 
 def extract_messages(jsonl_path):
-    """从 JSONL 文件提取消息内容"""
+    """从 JSONL 文件提取用户消息内容"""
     messages = []
     try:
         with open(jsonl_path, 'r', encoding='utf-8') as f:
@@ -37,8 +37,37 @@ def extract_messages(jsonl_path):
                             for c in content:
                                 if c.get('type') == 'text':
                                     text = c.get('text', '')
-                                    if text and not text.startswith('System:'):
-                                        messages.append(text)
+                                    # 去掉 System: 开头的元数据，保留真正的用户消息
+                                    if text:
+                                        # 找到第一个非元数据行（通常是用户的实际消息）
+                                        lines = text.split('\n')
+                                        real_lines = []
+                                        in_metadata = True
+                                        
+                                        for line in lines:
+                                            # 跳过 System: 开头的行
+                                            if line.startswith('System:'):
+                                                continue
+                                            # 跳过 JSON 元数据块
+                                            if line.strip().startswith('```json'):
+                                                in_metadata = True
+                                                continue
+                                            if line.strip() == '```':
+                                                in_metadata = False
+                                                continue
+                                            # 跳过 JSON 对象行
+                                            if in_metadata and (line.strip().startswith('{') or line.strip().startswith('}') or line.strip().startswith('"')):
+                                                continue
+                                            # 跳过空行
+                                            if not line.strip():
+                                                continue
+                                            
+                                            real_lines.append(line)
+                                        
+                                        if real_lines:
+                                            real_content = '\n'.join(real_lines).strip()
+                                            if len(real_content) > 2:
+                                                messages.append(real_content)
                     except:
                         pass
     except Exception as e:
@@ -93,10 +122,10 @@ def backup_to_indexer(messages, session_name):
     if not messages:
         return
     
-    # 合并消息内容
-    content = "\n".join(messages[:50])  # 最多 50 条
+    # 合并消息内容（保留更多内容以提取更多关键词）
+    content = "\n".join(messages[:100])  # 最多 100 条
     
-    # 调用 memory-indexer add
+    # 调用 memory-indexer add，使用更多关键词
     import subprocess
     cmd = [
         sys.executable,
@@ -104,13 +133,14 @@ def backup_to_indexer(messages, session_name):
         "add",
         content,
         "session-backup",
-        session_name
+        session_name,
+        "--keywords", "20"  # 提取更多关键词
     ]
     
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
         if result.returncode == 0:
-            print(f"  ✓ Added to indexer: {len(messages)} messages")
+            print(f"  ✓ Added to indexer: {len(messages)} messages, {len(content)} chars")
         else:
             print(f"  ✗ Indexer error: {result.stderr}")
     except Exception as e:
