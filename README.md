@@ -312,31 +312,20 @@ $ python memory-indexer.py related
    共同关键词: 小红书, 日记, 规划
 ```
 
-## 技术栈
+---
 
-- **Python 3.8+** - 运行环境
-- **jieba** - 中文分词
-- **argparse** - 命令行解析
-- **json** - 数据存储
+技术栈：Python 3.8+、jieba、argparse、json
 
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
+贡献：欢迎提交 Issue 和 Pull Request！
 1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/xxx`)
-3. 提交更改 (`git commit -m 'Add xxx'`)
-4. 推送分支 (`git push origin feature/xxx`)
+2. 创建特性分支 (git checkout -b feature/xxx)
+3. 提交更改 (git commit -m 'Add xxx')
+4. 推送分支 (git push origin feature/xxx)
 5. 创建 Pull Request
 
-## 开源许可证
+开源许可证：本项目使用 MIT 许可证。
 
-本项目使用 [MIT](./LICENSE) 许可证。
-
-## 作者
-
-- Author: [@smallmj](https://github.com/smallmj)
-- Email: hexiealan007@gmail.com
+作者：@smallmj | hexiealan007@gmail.com
 
 ---
 
