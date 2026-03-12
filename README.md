@@ -1,13 +1,5 @@
 # Memory Indexer 🧠
 
-<style>
-body { font-size: 16px; }
-h1 { font-size: 28px; }
-h2 { font-size: 22px; }
-h3 { font-size: 18px; }
-code { font-size: 14px; }
-</style>
-
 > 短期记忆关键词索引工具，为 AI Agent 提供长期记忆能力
 
 **版本**: v1.0.4 | [English](./README_EN.md) | 中文

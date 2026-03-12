@@ -1,13 +1,5 @@
 # Memory Indexer 🧠
 
-<style>
-body { font-size: 16px; }
-h1 { font-size: 28px; }
-h2 { font-size: 22px; }
-h3 { font-size: 18px; }
-code { font-size: 14px; }
-</style>
-
 > Short-term memory keyword indexing tool for AI Agent long-term memory
 
 **Version**: v1.0.4 | [中文](./README.md)
