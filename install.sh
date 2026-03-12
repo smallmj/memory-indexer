@@ -88,6 +88,52 @@ else
     echo -e "${YELLOW}警告: 未找到 AGENTS.md，跳过配置${NC}"
 fi
 
+# 配置 MEMORY.md（强制规则）
+echo ""
+echo "📝 配置 MEMORY.md（强制规则）..."
+MEMORY_FILE="$WORKSPACE/MEMORY.md"
+MEMORY_RULE='
+2. **保存记忆时** - 必须同时调用 memory-indexer 建立索引
+   - 执行命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py add "记忆内容" [标签...]`
+   - 搜索命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"`'
+
+if [ -f "$MEMORY_FILE" ]; then
+    if grep -q "memory-indexer" "$MEMORY_FILE" 2>/dev/null; then
+        echo "⚠️ MEMORY.md 已包含 memory-indexer 配置"
+    else
+        # 找到 "## 强制规则" 部分，在其后添加
+        if grep -q "## 强制规则" "$MEMORY_FILE"; then
+            sed -i "/## 强制规则/a\\$MEMORY_RULE" "$MEMORY_FILE"
+            echo "✅ 已添加配置到 MEMORY.md"
+        else
+            echo -e "${YELLOW}警告: MEMORY.md 中未找到强制规则部分，跳过${NC}"
+        fi
+    fi
+else
+    echo -e "${YELLOW}警告: 未找到 MEMORY.md，跳过配置${NC}"
+fi
+
+# 配置 HEARTBEAT.md
+echo ""
+echo "📝 配置 HEARTBEAT.md..."
+HEARTBEAT_FILE="$WORKSPACE/HEARTBEAT.md"
+HEARTBEAT_RULE='
+### 记忆索引同步
+- 每次添加记忆时自动建立索引（add 命令已内置）
+- 定期备份索引文件到 memory-index/ 目录
+- 频率：每次保存记忆时自动执行'
+
+if [ -f "$HEARTBEAT_FILE" ]; then
+    if grep -q "记忆索引同步" "$HEARTBEAT_FILE" 2>/dev/null; then
+        echo "⚠️ HEARTBEAT.md 已包含记忆索引配置"
+    else
+        echo "$HEARTBEAT_RULE" >> "$HEARTBEAT_FILE"
+        echo "✅ 已添加配置到 HEARTBEAT.md"
+    fi
+else
+    echo -e "${YELLOW}警告: 未找到 HEARTBEAT.md，跳过配置${NC}"
+fi
+
 # 配置 Cron（可选）
 echo ""
 echo "⏰ 配置 Cron 定时同步（可选）..."
