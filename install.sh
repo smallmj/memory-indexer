@@ -95,7 +95,10 @@ MEMORY_FILE="$WORKSPACE/MEMORY.md"
 MEMORY_RULE='
 2. **保存记忆时** - 必须同时调用 memory-indexer 建立索引
    - 执行命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py add "记忆内容" [标签...]`
-   - 搜索命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"`'
+   - 搜索命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"`
+3. **新会话开始时** - 自动调用 memory-indexer 搜索相关记忆
+   - 执行命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"`
+   - 触发条件：读取完 USER.md 后，自动搜索与用户相关的重要记忆（如项目、偏好等）'
 
 if [ -f "$MEMORY_FILE" ]; then
     if grep -q "memory-indexer" "$MEMORY_FILE" 2>/dev/null; then

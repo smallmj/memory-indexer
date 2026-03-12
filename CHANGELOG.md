@@ -5,6 +5,16 @@
 ## v1.0.4 (2026-03-12)
 
 ### English
+- ⚙️ config: install.sh MEMORY rule added "auto-search memory when new session starts"
+
+### 中文
+- ⚙️ config: install.sh MEMORY 规则新增"新会话开始时自动搜索记忆"
+
+---
+
+## v1.0.3 (2026-03-12)
+
+### English
 - 📖 docs: 添加"为什么要精简 Session Memory"说明文档
 - 🔄 integration: README 说明 session_backup.py 用途和效果
 
