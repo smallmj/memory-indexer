@@ -18,6 +18,7 @@
 - 🐛 fix: memory_compact.py now supports custom paths via command line arguments
 - 🐛 fix: session_backup.py now supports custom paths via command line arguments
 - 🔧 fix: Keyword extraction now filters GitHub tokens (ghp_xxx, gho_xxx, etc.) and other common API tokens
+- 🔧 fix: update.sh now supports auto-update of OpenClaw config files (AGENTS.md, MEMORY.md, HEARTBEAT.md) and Hooks
 
 ### 中文
 - 🎨 feat: 新增 memory_compact.py - Memory 文件精简脚本
@@ -28,6 +29,10 @@
 - 🔄 integration: heartbeat 新增自动执行 memory_compact.py
 - 🔧 fix: 关键词提取现在会过滤技术性 ID（UUID、hex 字符串、base64 等）
 - 🔧 fix: 改进子命令帮助信息，添加使用示例
+- 🐛 fix: memory_compact.py 现在支持通过命令行参数指定自定义路径
+- 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
+- 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
+- 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
 - 🐛 fix: memory_compact.py 现在支持通过命令行参数指定自定义路径
 - 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
 - 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
