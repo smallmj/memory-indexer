@@ -4,7 +4,7 @@
 
 ---
 
-## Unreleased (feature)
+## v1.0.8 (2026-03-13)
 
 ### English
 - 🎨 feat: Add memory_compact.py - Memory files compact script
@@ -33,6 +33,10 @@
 - 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
 - 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
 - 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
+
+---
+
+## Unreleased (feature)
 - 🐛 fix: memory_compact.py 现在支持通过命令行参数指定自定义路径
 - 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
 - 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
