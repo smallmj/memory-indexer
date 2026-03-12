@@ -10,15 +10,23 @@
 - 🎨 feat: Add memory_compact.py - Memory files compact script
   - Backup memory/*.md to memory-indexer
   - Compact large files to ~10KB
+  - Support command line arguments: --memory-dir, --indexer-dir, --max-size
 - ⚙️ config: AGENTS.md startup flow updated to search memory using user_id
 - 🔄 integration: heartbeat now auto-runs memory_compact.py
+- 🔧 fix: Keyword extraction now filters technical IDs (UUID, hex strings, base64, etc.)
+- 🔧 fix: Improved subcommand help messages with examples
+- 🐛 fix: memory_compact.py now supports custom paths via command line arguments
 
 ### 中文
 - 🎨 feat: 新增 memory_compact.py - Memory 文件精简脚本
   - 备份 memory/*.md 到 memory-indexer
   - 精简大文件到 ~10KB
+  - 支持命令行参数: --memory-dir, --indexer-dir, --max-size
 - ⚙️ config: AGENTS.md 启动流程更新为使用 user_id 搜索记忆
 - 🔄 integration: heartbeat 新增自动执行 memory_compact.py
+- 🔧 fix: 关键词提取现在会过滤技术性 ID（UUID、hex 字符串、base64 等）
+- 🔧 fix: 改进子命令帮助信息，添加使用示例
+- 🐛 fix: memory_compact.py 现在支持通过命令行参数指定自定义路径
 
 ---
 

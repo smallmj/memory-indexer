@@ -83,6 +83,40 @@ STOPWORDS = {
 FEISHU_ID_PATTERN = re.compile(r'^[ocou][a-z0-9]{10,}$')
 # 其他短 ID 格式
 SHORT_ID_PATTERN = re.compile(r'^[a-z0-9]{20,}$')
+# UUID 格式
+UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+# Hex 字符串（32位以上）
+HEX_PATTERN = re.compile(r'^[0-9a-f]{32,}$')
+# Base64 字符串
+BASE64_PATTERN = re.compile(r'^[A-Za-z0-9+/]{20,}={0,2}$')
+
+def is_technical_id(word: str) -> bool:
+    """检查是否是技术性 ID（应过滤）"""
+    if not word:
+        return True
+    word_lower = word.lower()
+    # 跳过短词
+    if len(word) < 3:
+        return True
+    # 跳过纯数字
+    if word.isdigit():
+        return True
+    # 检查各种技术 ID 格式
+    if FEISHU_ID_PATTERN.match(word):
+        return True
+    if SHORT_ID_PATTERN.match(word):
+        return True
+    if UUID_PATTERN.match(word_lower):
+        return True
+    if HEX_PATTERN.match(word_lower):
+        return True
+    if BASE64_PATTERN.match(word):
+        return True
+    # 跳过包含大量数字的词（如时间戳）
+    digit_count = sum(c.isdigit() for c in word)
+    if len(word) > 5 and digit_count / len(word) > 0.5:
+        return True
+    return False
 
 def ensure_memory_dir():
     """确保记忆目录存在"""
@@ -104,16 +138,17 @@ def extract_keywords(text: str, topk: int = 10) -> list:
     """提取关键词"""
     if JIEBA_AVAILABLE:
         # 使用 TF-IDF 提取关键词
-        keywords = jieba.analyse.extract_tags(text, topK=topk, withWeight=False)
-        # 过滤停用词
-        keywords = [w for w in keywords if w.lower() not in STOPWORDS]
+        keywords = jieba.analyse.extract_tags(text, topK=topk * 2, withWeight=False)  # 先多取一些，后面过滤
+        # 过滤停用词和技术性 ID
+        keywords = [w for w in keywords if w.lower() not in STOPWORDS and not is_technical_id(w)]
+        keywords = keywords[:topk]  # 再截取实际需要数量
     else:
         # 简单方案：提取连续的中文字符组合
         words = re.findall(r'[\u4e00-\u9fa5]{2,}', text)
         # 简单去重和排序
         word_freq = {}
         for w in words:
-            if w not in STOPWORDS:
+            if w not in STOPWORDS and not is_technical_id(w):
                 word_freq[w] = word_freq.get(w, 0) + 1
         keywords = sorted(word_freq.keys(), key=lambda x: word_freq[x], reverse=True)[:topk]
     
@@ -656,16 +691,23 @@ def main():
     command = args.command
     
     if command == "add":
+        # 添加记忆: python3 memory-indexer.py add "记忆内容" [标签1 标签2 ...] [--keywords 20]
         if len(args.args) < 1:
             print("用法: python3 memory-indexer.py add \"记忆内容\" [标签1 标签2 ...] [--keywords 20]")
+            print("示例: python3 memory-indexer.py add \"今天学习了 Python\"")
+            print("     python3 memory-indexer.py add \"项目进度\" 重要 里程碑 --keywords 15")
             sys.exit(1)
         content = args.args[0]
         tags = args.args[1:] if len(args.args) > 1 else []
         add_memory(content, tags, topk=args.keywords)
     
     elif command == "search":
+        # 搜索记忆: python3 memory-indexer.py search "关键词" [--and]
         if len(args.args) < 1:
             print("用法: python3 memory-indexer.py search \"关键词\" [--and]")
+            print("示例: python3 memory-indexer.py search Python")
+            print("     python3 memory-indexer.py search \"Python 机器学习\" --and")
+            print("选项: --and   AND 模式（所有关键词都匹配）")
             sys.exit(1)
         mode = "and" if args.use_and else "or"
         search_memories(args.args[0], mode=mode)
@@ -696,8 +738,10 @@ def main():
         show_timeline()
     
     elif command == "recall":
+        # 主动提醒: python3 memory-indexer.py recall "关键词"
         if len(args.args) < 1:
             print("用法: python3 memory-indexer.py recall \"关键词\"")
+            print("示例: python3 memory-indexer.py recall Python")
             sys.exit(1)
         recall(args.args[0])
     
@@ -705,8 +749,11 @@ def main():
         generate_summary()
     
     elif command == "star":
+        # 标记重要记忆: python3 memory-indexer.py star <文件名>
         if len(args.args) < 1:
             print("用法: python3 memory-indexer.py star <文件名>")
+            print("示例: python3 memory-indexer.py star 20260313_021414")
+            print("提示: 使用 list 命令查看所有记忆文件名")
             sys.exit(1)
         star_memory(args.args[0])
     
@@ -714,8 +761,10 @@ def main():
         list_stars()
     
     elif command == "unstar":
+        # 取消标记: python3 memory-indexer.py unstar <文件名>
         if len(args.args) < 1:
             print("用法: python3 memory-indexer.py unstar <文件名>")
+            print("示例: python3 memory-indexer.py unstar 20260313_021414")
             sys.exit(1)
         unstar_memory(args.args[0])
     
@@ -723,6 +772,9 @@ def main():
         # 调试用：显示文本的关键词
         if len(args.args) < 1:
             print("用法: python3 memory-indexer.py keywords \"文本\"")
+            print("示例: python3 memory-indexer.py keywords \"今天学习了 Python 编程\"")
+            print("提示: 此命令用于调试关键词提取功能")
+            sys.exit(1)
             sys.exit(1)
         keywords = extract_keywords(args.args[0])
         print("关键词:", ", ".join(keywords))

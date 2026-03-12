@@ -6,17 +6,64 @@ Memory Files Compact Script
 2. 精简原 .md 文件到合理大小
 
 用法：
-    python3 memory_compact.py [--max-size KB]
+    python3 memory_compact.py [--memory-dir PATH] [--indexer-dir PATH] [--max-size KB]
+
+选项：
+    --memory-dir PATH   Memory 文件目录 (默认: ~/.openclaw/workspace/memory)
+    --indexer-dir PATH  memory-indexer 目录 (默认: ~/.openclaw/workspace/skills/memory-indexer)
+    --max-size KB      精简后最大 KB 数 (默认: 10)
 """
 
 import os
 import sys
+import argparse
 from pathlib import Path
 
-# 配置
-MEMORY_DIR = Path.home() / ".openclaw" / "workspace" / "memory"
-MEMORY_INDEXER_DIR = Path.home() / ".openclaw" / "workspace" / "skills" / "memory-indexer"
-MAX_SIZE_KB = 10  # 精简后最大 10KB
+# 默认配置
+DEFAULT_MEMORY_DIR = Path.home() / ".openclaw" / "workspace" / "memory"
+DEFAULT_INDEXER_DIR = Path.home() / ".openclaw" / "workspace" / "skills" / "memory-indexer"
+DEFAULT_MAX_SIZE_KB = 10
+
+
+def parse_args():
+    """解析命令行参数"""
+    parser = argparse.ArgumentParser(
+        description="Memory Files Compact - 备份并精简 Memory 文件",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+示例:
+    python3 memory_compact.py                           # 使用默认配置
+    python3 memory_compact.py --max-size 20            # 精简后最大 20KB
+    python3 memory_compact.py --memory-dir /path/to/memory
+    python3 memory_compact.py --indexer-dir /path/to/indexer --max-size 15
+        """
+    )
+    parser.add_argument(
+        "--memory-dir", "-m",
+        type=Path,
+        default=DEFAULT_MEMORY_DIR,
+        help=f"Memory 文件目录 (默认: {DEFAULT_MEMORY_DIR})"
+    )
+    parser.add_argument(
+        "--indexer-dir", "-i",
+        type=Path,
+        default=DEFAULT_INDEXER_DIR,
+        help=f"memory-indexer 目录 (默认: {DEFAULT_INDEXER_DIR})"
+    )
+    parser.add_argument(
+        "--max-size", "-s",
+        type=int,
+        default=DEFAULT_MAX_SIZE_KB,
+        help=f"精简后最大 KB 数 (默认: {DEFAULT_MAX_SIZE_KB})"
+    )
+    return parser.parse_args()
+
+
+# 解析命令行参数获取配置
+args = parse_args()
+MEMORY_DIR = args.memory_dir
+MEMORY_INDEXER_DIR = args.indexer_dir
+MAX_SIZE_KB = args.max_size
 
 
 def extract_key_sections(content):
