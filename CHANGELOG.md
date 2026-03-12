@@ -1,8 +1,10 @@
 # Changelog / 更新日志
 
+> **版本号规则：** Feature 分支不更新版本号，合并到 main 时统一递增版本号
+
 ---
 
-## v1.0.8 (2026-03-13)
+## Unreleased (feature)
 
 ### English
 - 🎨 feat: Add memory_compact.py - Memory files compact script
