@@ -223,7 +223,7 @@ $ python memory-indexer.py related
 
 ## 作者
 
-- Author: smallmj
+- Author: @smallmj
 - Email: hexiealan007@gmail.com
 
 ---

@@ -221,7 +221,7 @@ This project is licensed under the [MIT](./LICENSE) license.
 
 ## Author
 
-- Author: smallmj
+- Author: @smallmj
 - Email: hexiealan007@gmail.com
 
 ---
