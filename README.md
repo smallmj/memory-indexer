@@ -2,7 +2,7 @@
 
 > 短期记忆关键词索引工具，为 AI Agent 提供长期记忆能力
 
-**版本**: v1.0.0 | [English](./README_EN.md) | 中文
+**版本**: v1.0.1 | [English](./README_EN.md) | 中文
 
 ## 简介
 
