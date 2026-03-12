@@ -2,6 +2,18 @@
 
 ---
 
+## v1.0.3 (2026-03-12)
+
+### English
+- 🎨 feat: 添加 session_backup.py - 会话备份与精简脚本
+- 🔄 integration: heartbeat 自动备份会话内容到 indexer，精简原文件到 10KB
+
+### 中文
+- 🎨 feat: 添加 session_backup.py - 会话备份与精简脚本
+- 🔄 integration: heartbeat 自动备份会话内容到 indexer，精简原文件到 10KB
+
+---
+
 ## v1.0.2 (2026-03-12)
 
 ### English
