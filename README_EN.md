@@ -54,23 +54,54 @@ Automatically cleans up index entries for deleted memories.
 - Python 3.8+
 - jieba (Chinese segmentation library)
 
-### Steps
+### Option 1: Run Install Script (Recommended)
+
+```bash
+# Clone project
+git clone https://github.com/smallmj/memory-indexer.git
+cd memory-indexer
+
+# Run install script
+chmod +x install.sh
+./install.sh
+```
+
+The install script will:
+- ✅ Check and install dependencies (jieba)
+- ✅ Create symlink to OpenClaw skills directory
+- ✅ Auto-configure AGENTS.md
+- ✅ Optional: Configure Cron auto-sync
+
+### Option 2: Manual Install
 
 ```bash
 # 1. Clone the project
-git clone https://github.com/your-username/memory-indexer.git
+git clone https://github.com/smallmj/memory-indexer.git
 cd memory-indexer
 
-# 2. Create virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate  # Windows
-
-# 3. Install dependencies
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# 4. Run test
-python memory-indexer.py status
+# 3. First run
+python3 memory-indexer.py status
+```
+
+### Update
+
+```bash
+# Enter project directory
+cd memory-indexer
+
+# Run update script
+chmod +x update.sh
+./update.sh
+```
+
+The update script will:
+- ✅ Auto pull latest code
+- ✅ Backup data
+- ✅ Check and install dependencies
+- ✅ Re-sync index
 ```
 
 ## Quick Start
