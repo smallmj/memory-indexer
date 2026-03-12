@@ -6,21 +6,76 @@ Session Backup & Compact Script
 2. 精简原会话文件到 ~10KB
 
 用法：
-    python3 session_backup.py [--max-size KB]
+    python3 session_backup.py [--agents-dir PATH] [--indexer-dir PATH] [--backup-dir PATH] [--max-size KB]
+
+选项：
+    --agents-dir PATH   Agent sessions 目录 (默认: ~/.openclaw/agents/main/sessions)
+    --indexer-dir PATH  memory-indexer 目录 (默认: ~/.openclaw/workspace/skills/memory-indexer)
+    --backup-dir PATH   备份目录 (默认: ~/.openclaw/workspace/memory-index/session-backups)
+    --max-size KB      精简后最大 KB 数 (默认: 10)
 """
 
 import json
 import os
 import sys
 import re
+import argparse
 from pathlib import Path
 from datetime import datetime
 
-# 配置
-AGENTS_DIR = Path.home() / ".openclaw" / "agents" / "main" / "sessions"
-MEMORY_INDEXER_DIR = Path.home() / ".openclaw" / "workspace" / "skills" / "memory-indexer"
-BACKUP_DIR = Path.home() / ".openclaw" / "workspace" / "memory-index" / "session-backups"
-MAX_SIZE_KB = 10  # 精简后最大 10KB
+# 默认配置
+DEFAULT_AGENTS_DIR = Path.home() / ".openclaw" / "agents" / "main" / "sessions"
+DEFAULT_INDEXER_DIR = Path.home() / ".openclaw" / "workspace" / "skills" / "memory-indexer"
+DEFAULT_BACKUP_DIR = Path.home() / ".openclaw" / "workspace" / "memory-index" / "session-backups"
+DEFAULT_MAX_SIZE_KB = 10
+
+
+def parse_args():
+    """解析命令行参数"""
+    parser = argparse.ArgumentParser(
+        description="Session Backup & Compact - 备份并精简会话文件",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+示例:
+    python3 session_backup.py                           # 使用默认配置
+    python3 session_backup.py --max-size 20            # 精简后最大 20KB
+    python3 session_backup.py --agents-dir /path/to/sessions
+    python3 session_backup.py --indexer-dir /path/to/indexer --backup-dir /path/to/backup
+        """
+    )
+    parser.add_argument(
+        "--agents-dir", "-a",
+        type=Path,
+        default=DEFAULT_AGENTS_DIR,
+        help=f"Agent sessions 目录 (默认: {DEFAULT_AGENTS_DIR})"
+    )
+    parser.add_argument(
+        "--indexer-dir", "-i",
+        type=Path,
+        default=DEFAULT_INDEXER_DIR,
+        help=f"memory-indexer 目录 (默认: {DEFAULT_INDEXER_DIR})"
+    )
+    parser.add_argument(
+        "--backup-dir", "-b",
+        type=Path,
+        default=DEFAULT_BACKUP_DIR,
+        help=f"备份目录 (默认: {DEFAULT_BACKUP_DIR})"
+    )
+    parser.add_argument(
+        "--max-size", "-s",
+        type=int,
+        default=DEFAULT_MAX_SIZE_KB,
+        help=f"精简后最大 KB 数 (默认: {DEFAULT_MAX_SIZE_KB})"
+    )
+    return parser.parse_args()
+
+
+# 解析命令行参数获取配置
+args = parse_args()
+AGENTS_DIR = args.agents_dir
+MEMORY_INDEXER_DIR = args.indexer_dir
+BACKUP_DIR = args.backup_dir
+MAX_SIZE_KB = args.max_size
 
 
 def extract_messages(jsonl_path):
