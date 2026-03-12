@@ -229,24 +229,6 @@ uv run python skills/memory-indexer/session_backup.py
 这样可以确保：即使短期记忆丢失，也能通过索引找回之前的记忆内容。
 ```
 
-### 心跳自动同步
-
-在 `HEARTBEAT.md` 中添加：
-
-```markdown
-### 记忆索引同步
-- 命令：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py sync`
-- 频率：每次心跳
-```
-
-### Cron 定时备份
-
-```bash
-crontab -e
-# 每天早上 6 点自动同步
-0 6 * * * cd /home/user/.openclaw/workspace && python skills/memory-indexer/memory-indexer.py sync
-```
-
 ## 命令参考
 
 | 命令 | 功能 | 示例 |
@@ -274,6 +256,12 @@ crontab -e
 ├── index.json          # 关键词索引
 ├── sync-state.json    # 同步状态
 └── stars.json         # 重要记忆标记
+```
+
+会话备份脚本会在以下目录存储备份：
+
+```
+~/.openclaw/workspace/memory-index/session-backups/
 ```
 
 可通过修改代码中的 `WORKSPACE` 变量自定义存储路径。
