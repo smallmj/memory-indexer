@@ -2,6 +2,24 @@
 
 ---
 
+## v1.0.8 (2026-03-13)
+
+### English
+- 🎨 feat: 新增 memory_compact.py - Memory 文件精简脚本
+  - 备份 memory/*.md 到 memory-indexer
+  - 精简大文件到 ~10KB
+- ⚙️ config: AGENTS.md 启动流程更新为使用 user_id 搜索记忆
+- 🔄 integration: heartbeat 新增自动执行 memory_compact.py
+
+### 中文
+- 🎨 feat: 新增 memory_compact.py - Memory 文件精简脚本
+  - 备份 memory/*.md 到 memory-indexer
+  - 精简大文件到 ~10KB
+- ⚙️ config: AGENTS.md 启动流程更新为使用 user_id 搜索记忆
+- 🔄 integration: heartbeat 新增自动执行 memory_compact.py
+
+---
+
 ## v1.0.7 (2026-03-13)
 
 ### English

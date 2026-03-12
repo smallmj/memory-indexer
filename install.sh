@@ -67,6 +67,8 @@ MEMORY_INDEXER_RULE='
 当需要回忆某事时，必须按以下顺序搜索：
 
 1. **先用 memory-indexer 搜索**（检索关键词索引）
+   - 使用 user_id + 关键词搜索
+   - 搜索"偏好"、"项目"、"任务"等通用关键词
    ```bash
    cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"
    ```
@@ -124,7 +126,19 @@ HEARTBEAT_RULE='
 ### 记忆索引同步
 - 每次添加记忆时自动建立索引（add 命令已内置）
 - 定期备份索引文件到 memory-index/ 目录
-- 频率：每次保存记忆时自动执行'
+- 频率：每次保存记忆时自动执行
+
+### 会话备份与精简
+- 备份会话内容到 memory-indexer（关键词索引）
+- 精简原会话文件到 ~10KB（避免无限增长）
+- 脚本：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/session_backup.py`
+- 频率：每次心跳时执行（自动增量处理最近 3 个会话）
+
+### Memory 文件精简
+- 备份 memory/*.md 到 memory-indexer
+- 精简大文件到 ~10KB
+- 脚本：`cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory_compact.py`
+- 频率：每次心跳时执行'
 
 if [ -f "$HEARTBEAT_FILE" ]; then
     if grep -q "记忆索引同步" "$HEARTBEAT_FILE" 2>/dev/null; then
