@@ -2,6 +2,18 @@
 
 ---
 
+## v1.0.4 (2026-03-12)
+
+### English
+- 📖 docs: 添加"为什么要精简 Session Memory"说明文档
+- 🔄 integration: README 说明 session_backup.py 用途和效果
+
+### 中文
+- 📖 docs: 添加"为什么要精简 Session Memory"说明文档
+- 🔄 integration: README 说明 session_backup.py 用途和效果
+
+---
+
 ## v1.0.3 (2026-03-12)
 
 ### English

@@ -2,7 +2,7 @@
 
 > Short-term memory keyword indexing tool for AI Agents
 
-**Version**: v1.0.3 | [中文](./README.md) | English
+**Version**: v1.0.4 | [中文](./README.md) | English
 
 ## Introduction
 - ✅ Active recall
