@@ -223,10 +223,8 @@ $ python memory-indexer.py related
 
 ## 作者
 
-- Author: 何协
-- Email: hexie@bjxmwk.com
-- GitHub: [@smallmj](https://github.com/smallmj)
-- 公司: 北京西迈威科科技有限公司
+- Author: smallmj
+- Email: hexiealan007@gmail.com
 
 ---
 

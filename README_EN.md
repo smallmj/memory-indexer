@@ -221,10 +221,8 @@ This project is licensed under the [MIT](./LICENSE) license.
 
 ## Author
 
-- Author: He Xie
-- Email: hexie@bjxmwk.com
-- GitHub: [@smallmj](https://github.com/smallmj)
-- Company: Beijing XiMaiWeiKe Technology Co., Ltd.
+- Author: smallmj
+- Email: hexiealan007@gmail.com
 
 ---
 
