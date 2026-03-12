@@ -5,6 +5,20 @@
 ## v1.0.5 (2026-03-12)
 
 ### English
+- ⚙️ config: install.sh now includes Hook installation (memory-indexer-on-new)
+- 📖 docs: README added manual Hook installation instructions
+- 🔄 integration: install.sh automatically copies Hook to ~/.openclaw/hooks/
+
+### 中文
+- ⚙️ config: install.sh 新增 Hook 安装（memory-indexer-on-new）
+- 📖 docs: README 添加手动安装 Hook 说明
+- 🔄 integration: install.sh 自动复制 Hook 到 ~/.openclaw/hooks/
+
+---
+
+## v1.0.5 (2026-03-12)
+
+### English
 - 🎨 feat: Add `hooks/memory-indexer-on-new` - OpenClaw hook for auto-searching memories on new conversation
   - Location: `~/.openclaw/hooks/memory-indexer-on-new/`
   - Listens for `/new` command, automatically calls memory-indexer to search

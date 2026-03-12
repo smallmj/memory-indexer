@@ -2,7 +2,7 @@
 
 > Short-term memory keyword indexing tool for AI Agent long-term memory
 
-**Version**: v1.0.4 | [中文](./README.md)
+**Version**: v1.0.5 | [中文](./README.md)
 
 ## Introduction
 
@@ -34,6 +34,7 @@ Memory Indexer makes memory searchable, relatable, and traceable through keyword
 7. Incremental sync: only index new or modified files
 8. Dead cleanup: auto-clean deleted memory indexes
 9. Session backup & compact: backup user messages to index, compact session files to ~10KB
+10. **Auto-search on new conversation**: Hook mechanism, auto-retrieve related memories when new session starts
 
 ## Installation
 
@@ -79,6 +80,16 @@ If you don't want to run install.sh, manually add these configs in OpenClaw work
 2. **MEMORY.md** - Mandatory rules: call indexer on save/new session
 3. **HEARTBEAT.md** - Periodic sync + session backup
 
+**Manual Hook Installation (auto-search on new conversation):**
+
+```bash
+# Copy Hook directory to OpenClaw
+cp -r hooks/memory-indexer-on-new ~/.openclaw/hooks/
+
+# Restart Gateway to take effect
+openclaw gateway restart
+```
+
 ## Quick Start
 
 ```bash
@@ -108,6 +119,27 @@ uv run python skills/memory-indexer/memory-indexer.py add "memory content"
 # Session backup & compact (runs on every heartbeat)
 uv run python skills/memory-indexer/session_backup.py
 ```
+
+### Hook: Auto-search on New Conversation
+
+Starting from v1.0.5, provides OpenClaw Hook `memory-indexer-on-new` to automatically search related memories when a new conversation starts.
+
+**Install Hook:**
+
+```bash
+# Copy Hook directory to OpenClaw
+cp -r hooks/memory-indexer-on-new ~/.openclaw/hooks/
+
+# Restart Gateway to take effect
+openclaw gateway restart
+```
+
+**How it works:**
+- Hook listens for `/new` command (can be configured to auto-trigger in AGENTS.md)
+- Automatically calls memory-indexer to search user-related memories
+- Search keywords: user name, preferences, projects, tasks, etc.
+
+**File location:** `~/.openclaw/hooks/memory-indexer-on-new/`
 
 ## Command Reference
 

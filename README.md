@@ -80,6 +80,16 @@ python3 memory-indexer.py status
 2. **MEMORY.md** - 强制规则：保存/新会话时调用 indexer
 3. **HEARTBEAT.md** - 定期同步 + 会话备份
 
+**手动安装 Hook（新对话自动搜索记忆）：**
+
+```bash
+# 复制 Hook 目录到 OpenClaw
+cp -r hooks/memory-indexer-on-new ~/.openclaw/hooks/
+
+# 重启 Gateway 使其生效
+openclaw gateway restart
+```
+
 ## 快速开始
 
 ```bash

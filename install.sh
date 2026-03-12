@@ -148,6 +148,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "✅ Cron 配置完成（每天 6 点自动同步）"
 fi
 
+# 安装 Hook（新对话自动搜索记忆）
+echo ""
+echo "🪝 安装 Hook (memory-indexer-on-new)..."
+HOOKS_DIR="${HOME}/.openclaw/hooks"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -d "$SCRIPT_DIR/hooks/memory-indexer-on-new" ]; then
+    mkdir -p "$HOOKS_DIR"
+    cp -rf "$SCRIPT_DIR/hooks/memory-indexer-on-new" "$HOOKS_DIR/"
+    echo "✅ Hook 已安装到: $HOOKS_DIR/memory-indexer-on-new"
+    echo "   重启 Gateway 使其生效: openclaw gateway restart"
+else
+    echo "⚠️ 未找到 Hook 目录，跳过"
+fi
+
 # 完成
 echo ""
 echo "=============================="
