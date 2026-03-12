@@ -2,7 +2,7 @@
 
 > Short-term memory keyword indexing tool for AI Agent long-term memory
 
-Version: v1.0.4 | 中文
+**Version**: v1.0.4 | [中文](./README.md)
 
 ## Introduction
 
@@ -39,10 +39,12 @@ Memory Indexer makes memory searchable, relatable, and traceable through keyword
 
 ### Option 1: Run install script (recommended)
 
+```bash
 git clone https://github.com/smallmj/memory-indexer.git
 cd memory-indexer
 chmod +x install.sh
 ./install.sh
+```
 
 Install script will:
 - Check and install dependencies (jieba)
@@ -51,24 +53,35 @@ Install script will:
 
 ### Option 2: Manual install
 
+```bash
 git clone https://github.com/smallmj/memory-indexer.git
 cd memory-indexer
 pip install -r requirements.txt
 ln -sf "$(pwd)" ~/.openclaw/workspace/skills/memory-indexer
 python3 memory-indexer.py status
+```
 
-### Manual config (without install.sh)
+### Auto-config说明
 
-Add these configs in OpenClaw workspace:
+Running `install.sh` will auto-configure:
 
-1. AGENTS.md - Memory search rules
-2. MEMORY.md - Mandatory rules: call indexer on save/new session
-3. HEARTBEAT.md - Periodic sync + session backup
+| File | Content | Purpose |
+|------|---------|----------|
+| `AGENTS.md` | Memory search rules | Auto search related memory on new session |
+| `MEMORY.md` | Mandatory rules: call indexer on save/new session | Auto build index, auto search |
+| `HEARTBEAT.md` | Periodic sync + session backup | Auto backup and compact session memory |
 
-See auto-config table above for details.
+**Manual config (without install.sh):**
+
+If you don't want to run install.sh, manually add these configs in OpenClaw workspace:
+
+1. **AGENTS.md** - Memory search rules for session start
+2. **MEMORY.md** - Mandatory rules: call indexer on save/new session
+3. **HEARTBEAT.md** - Periodic sync + session backup
 
 ## Quick Start
 
+```bash
 # Add memory
 python memory-indexer.py add "Today I learned Python"
 
@@ -83,42 +96,61 @@ python memory-indexer.py list
 
 # Memory summary
 python memory-indexer.py summary
+```
 
 ## Integration with OpenClaw
 
+```bash
 cd ~/.openclaw/workspace
 uv pip install jieba
 uv run python skills/memory-indexer/memory-indexer.py add "memory content"
 
 # Session backup & compact (runs on every heartbeat)
 uv run python skills/memory-indexer/session_backup.py
+```
 
 ## Command Reference
 
-add              Add memory              add "Today I learned Python"
-search           Search memory           search "Python"
-search --and     AND search              search "Python AI" --and
-list             List all memories       list
-sync             Sync external directory sync
-cleanup          Cleanup dead indexes    cleanup
-related          Related discovery       related
-timeline         Timeline view           timeline
-recall           Active reminder         recall "Python"
-summary          Memory summary          summary
-star             Mark important          star 20260312.md
-stars            View important memories stars
-status           View status             status
+| Command | Description | Example |
+|---------|-------------|---------|
+| `add` | Add memory | `add "Today I learned Python"` |
+| `search` | Search memory | `search "Python"` |
+| `search --and` | AND search | `search "Python AI" --and` |
+| `list` | List all memories | `list` |
+| `sync` | Sync external directory | `sync` |
+| `cleanup` | Cleanup dead indexes | `cleanup` |
+| `related` | Related discovery | `related` |
+| `timeline` | Timeline view | `timeline` |
+| `recall` | Active reminder | `recall "Python"` |
+| `summary` | Memory summary | `summary` |
+| `star` | Mark important | `star 20260312.md` |
+| `stars` | View important memories | `stars` |
+| `status` | View status | `status` |
 
 ## Config
 
-Data directory: ~/.memory-indexer/
-- index.json       keyword index
-- sync-state.json  sync state
-- stars.json      important memory marks
+Data directory: `~/.memory-indexer/`
 
-Backup directory: ~/.openclaw/workspace/memory-index/session-backups/
+```
+~/.memory-indexer/
+├── index.json          # keyword index
+├── sync-state.json    # sync state
+└── stars.json         # important memory marks
+```
 
-Modify WORKSPACE variable in code to customize storage path.
+Backup directory: `~/.openclaw/workspace/memory-index/session-backups/`
+
+Modify `WORKSPACE` variable in code to customize storage path.
+
+## Update
+
+```bash
+cd memory-indexer
+chmod +x update.sh
+./update.sh
+```
+
+Update script will auto pull code, backup data, check dependencies, re-sync index.
 
 ---
 
