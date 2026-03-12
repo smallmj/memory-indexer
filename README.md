@@ -223,9 +223,10 @@ $ python memory-indexer.py related
 
 ## 作者
 
-- Author: Your Name
-- Email: your@email.com
-- GitHub: [@your-username](https://github.com/your-username)
+- Author: 何协
+- Email: hexie@bjxmwk.com
+- GitHub: [@smallmj](https://github.com/smallmj)
+- 公司: 北京西迈威科科技有限公司
 
 ---
 

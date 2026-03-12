@@ -221,9 +221,10 @@ This project is licensed under the [MIT](./LICENSE) license.
 
 ## Author
 
-- Author: Your Name
-- Email: your@email.com
-- GitHub: [@your-username](https://github.com/your-username)
+- Author: He Xie
+- Email: hexie@bjxmwk.com
+- GitHub: [@smallmj](https://github.com/smallmj)
+- Company: Beijing XiMaiWeiKe Technology Co., Ltd.
 
 ---
 
