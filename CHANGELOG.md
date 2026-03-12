@@ -5,8 +5,8 @@
 ## v1.0.2 (2026-03-12)
 
 ### English
-- 🎨 feat: install.sh 自动配置 MEMORY.md 和 HEARTBEAT.md 规则
-- 🔄 integration: 一键安装自动完成所有 OpenClaw 配置
+- 🎨 feat: install.sh auto-configures MEMORY.md and HEARTBEAT.md rules
+- 🔄 integration: One-click install completes all OpenClaw configurations
 
 ### 中文
 - 🎨 feat: install.sh 自动配置 MEMORY.md 和 HEARTBEAT.md 规则
