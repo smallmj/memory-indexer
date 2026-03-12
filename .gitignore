@@ -37,9 +37,8 @@ env/
 .DS_Store
 Thumbs.db
 
-# Memory Indexer Data（可选：如果你想排除数据文件）
-# memory-index/
-# *.json
+# Memory Indexer Data
+data/
 
 # Logs
 *.log

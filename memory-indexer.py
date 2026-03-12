@@ -52,7 +52,7 @@ except ImportError:
 
 # 配置
 WORKSPACE = Path.home() / ".openclaw" / "workspace"
-MEMORY_DIR = WORKSPACE / "memory-index"
+MEMORY_DIR = Path(__file__).parent / "data"
 EXTERNAL_MEMORY_DIR = WORKSPACE / "memory"  # 外部记忆目录
 INDEX_FILE = MEMORY_DIR / "index.json"
 STATE_FILE = MEMORY_DIR / "sync-state.json"  # 同步状态（记录已同步的文件）
@@ -267,8 +267,6 @@ def search_memories(query: str, mode: str = "or"):
     for item in results:
         score_indicator = "🔥" * min(item.get("score", 0) // 10, 3)
         print(f"📄 {item['file']} - {item['time']} {score_indicator}")
-        print(f"   {item['preview']}")
-        print()
         print(f"   {item['preview']}")
         print()
 
