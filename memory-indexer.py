@@ -90,7 +90,7 @@ HEX_PATTERN = re.compile(r'^[0-9a-f]{32,}$')
 # Base64 字符串
 BASE64_PATTERN = re.compile(r'^[A-Za-z0-9+/]{20,}={0,2}$')
 # GitHub Token 格式 (ghp_xxx, gho_xxx, ghu_xxx, ghs_xxx, ghr_xxx, github_pat_xxx 等)
-GITHUB_TOKEN_PATTERN = re.compile(r'^(ghp_|gho_|ghu_|ghs_|ghr_|github_pat_)[A-Za-z0-9_]{20,}$')
+GITHUB_TOKEN_PATTERN = re.compile(r'^(ghp_|gho_|ghu_|ghs_|ghr_|github_pat_)[A-Za-z0-9_]{10,}$')
 # 其他常见 Token 格式
 TOKEN_PREFIXES = ['sk-', 'skl-', 'Bearer ', 'eyJ', 'AKIA']  # OpenAI, Google, AWS 等
 
@@ -116,12 +116,18 @@ def is_technical_id(word: str) -> bool:
         return True
     if BASE64_PATTERN.match(word):
         return True
-    # 检查 GitHub Token 格式
+    # 检查 GitHub Token 格式（完整匹配或包含前缀）
     if GITHUB_TOKEN_PATTERN.match(word_lower):
+        return True
+    # 检查是否包含 GitHub Token 前缀（jieba 分词后可能不完整）
+    # 过滤 ghp, gho, ghu, ghs, ghr 等被拆分的前缀
+    if word_lower in ['ghp', 'gho', 'ghu', 'ghs', 'ghr']:
+        return True
+    if 'ghp_' in word_lower or 'gho_' in word_lower or 'ghu_' in word_lower or 'ghs_' in word_lower or 'ghr_' in word_lower or 'github_pat' in word_lower:
         return True
     # 检查其他常见 Token 前缀
     for prefix in TOKEN_PREFIXES:
-        if word_lower.startswith(prefix):
+        if prefix.lower() in word_lower:
             return True
     # 跳过包含大量数字的词（如时间戳）
     digit_count = sum(c.isdigit() for c in word)
