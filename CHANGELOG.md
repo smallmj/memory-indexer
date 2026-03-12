@@ -4,6 +4,24 @@
 
 ---
 
+## Unreleased (feature)
+
+### English
+- 🔧 fix: update.sh now supports auto-update of OpenClaw config files (AGENTS.md, MEMORY.md, HEARTBEAT.md) and Hooks
+  - Add --skip-config option to skip config update
+  - Add --skip-hooks option to skip hooks update
+  - Auto-update soft links, config files and Hooks
+  - Add help info and color output
+
+### 中文
+- 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
+  - 添加 --skip-config 选项跳过配置更新
+  - 添加 --skip-hooks 选项跳过 Hook 更新
+  - 自动更新软链接、配置文件和 Hooks
+  - 添加帮助信息和彩色输出
+
+---
+
 ## v1.0.8 (2026-03-13)
 
 ### English
@@ -33,24 +51,6 @@
 - 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
 - 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
 - 🔧 fix: 增强 GitHub Token 过滤，过滤被 jieba 拆分后的 token 前缀
-
----
-
-## Unreleased (feature)
-
-### English
-- 🔧 fix: update.sh now supports auto-update of OpenClaw config files (AGENTS.md, MEMORY.md, HEARTBEAT.md) and Hooks
-  - Add --skip-config option to skip config update
-  - Add --skip-hooks option to skip hooks update
-  - Auto-update soft links, config files and Hooks
-  - Add help info and color output
-
-### 中文
-- 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
-  - 添加 --skip-config 选项跳过配置更新
-  - 添加 --skip-hooks 选项跳过 Hook 更新
-  - 自动更新软链接、配置文件和 Hooks
-  - 添加帮助信息和彩色输出
 
 ---
 
