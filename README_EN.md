@@ -1,294 +1,140 @@
 # Memory Indexer 🧠
 
-> Short-term memory keyword indexing tool for AI Agents
+> Short-term memory keyword indexing tool for AI Agent long-term memory
 
-**Version**: v1.0.4 | [中文](./README.md) | English
-
-## Introduction
-- ✅ Active recall
-- ✅ Memory summary
-- ✅ Important memory marking
-- ✅ Incremental sync
-- ✅ Stale cleanup
-- ✅ Importable API
-- ✅ Install/Update scripts
+Version: v1.0.4 | 中文
 
 ## Introduction
 
-Memory Indexer is a tool that helps AI Agents persist their memory. It can:
+Memory Indexer helps AI Agents persist memory:
 
-- ✅ Automatically extract keywords from memory content
-- ✅ Build fast keyword → memory file index
-- ✅ Support multi-keyword precise search (AND/OR mode)
-- ✅ Auto-discover related memories
-- ✅ Display memories on a timeline
-- ✅ Mark and view important memories
-- ✅ Incrementally sync external memory directories
+- Auto-extract keywords from memory content
+- Build fast keyword → memory file index
+- Multi-keyword search (AND/OR mode)
+- Auto-discover related memories
+- Timeline view of memories
+- Mark and view important memories
+- Incremental sync of external memory directory
+- Session backup & compact (prevent unlimited session memory growth)
 
-## Why Do You Need It?
+## Why Do We Need It?
 
-AI Agents lose context after each conversation ends. Traditional solutions only save raw text, making retrieval difficult.
+AI Agents lose context after each session ends. Traditional solutions only save raw text, making retrieval difficult.
 
-**Memory Indexer makes memories searchable, connectable, and traceable through keyword indexing.**
+Memory Indexer makes memory searchable, relatable, and traceable through keyword indexing.
 
 ## Features
 
-### 1. Automatic Keyword Extraction
-Uses jieba for Chinese word segmentation to automatically extract keywords from memory content.
-
-### 2. Multi-mode Search
-- **OR mode**: Returns results if any keyword matches
-- **AND mode**: Returns results only if all keywords match
-
-### 3. Related Discovery
-Automatically discovers which memories often appear together and generates related recommendations.
-
-### 4. Timeline View
-Displays all memories in chronological order for easy review.
-
-### 5. Active Recall
-Automatically prompts related old memories based on current conversation keywords.
-
-### 6. Important Memory Marking
-Manually mark important memories for priority retention and display.
-
-### 7. Incremental Sync
-Automatically scans external memory/ directory, only indexing new or modified files.
-
-### 8. Stale Entry Cleanup
-Automatically cleans up index entries for deleted memories.
+1. Auto keyword extraction: using jieba Chinese word segmentation
+2. Multi-mode search: OR (any match) / AND (all match)
+3. Related discovery: auto-find memories that often appear together
+4. Timeline view: show memories in chronological order
+5. Active reminders: suggest related memories based on current keywords
+6. Important memory marking: manually mark for priority retention
+7. Incremental sync: only index new or modified files
+8. Dead cleanup: auto-clean deleted memory indexes
+9. Session backup & compact: backup user messages to index, compact session files to ~10KB
 
 ## Installation
 
-### Prerequisites
+### Option 1: Run install script (recommended)
 
-- Python 3.8+
-- jieba (Chinese segmentation library)
-
-### Option 1: Run Install Script (Recommended)
-
-```bash
-# Clone project
 git clone https://github.com/smallmj/memory-indexer.git
 cd memory-indexer
-
-# Run install script
 chmod +x install.sh
 ./install.sh
-```
 
-The install script will:
-- ✅ Check and install dependencies (jieba)
-- ✅ Create symlink to OpenClaw skills directory
-- ✅ Auto-configure AGENTS.md
-- ✅ Optional: Configure Cron auto-sync
+Install script will:
+- Check and install dependencies (jieba)
+- Create symlink to OpenClaw skills directory
+- Configure AGENTS.md, MEMORY.md, HEARTBEAT.md
 
-### Option 2: Manual Install
+### Option 2: Manual install
 
-```bash
-# 1. Clone the project
 git clone https://github.com/smallmj/memory-indexer.git
 cd memory-indexer
-
-# 2. Install dependencies
 pip install -r requirements.txt
-
-# 3. First run
+ln -sf "$(pwd)" ~/.openclaw/workspace/skills/memory-indexer
 python3 memory-indexer.py status
-```
 
-### Update
+### Manual config (without install.sh)
 
-```bash
-# Enter project directory
-cd memory-indexer
+Add these configs in OpenClaw workspace:
 
-# Run update script
-chmod +x update.sh
-./update.sh
-```
+1. AGENTS.md - Memory search rules
+2. MEMORY.md - Mandatory rules: call indexer on save/new session
+3. HEARTBEAT.md - Periodic sync + session backup
 
-The update script will:
-- ✅ Auto pull latest code
-- ✅ Backup data
-- ✅ Check and install dependencies
-- ✅ Re-sync index
-```
+See auto-config table above for details.
 
 ## Quick Start
 
-### Basic Usage
+# Add memory
+python memory-indexer.py add "Today I learned Python"
 
-```bash
-# Add a memory
-python memory-indexer.py add "Today I learned Python programming"
-
-# Search memories (OR mode)
+# Search (OR mode)
 python memory-indexer.py search "Python"
 
-# Search memories (AND mode)
-python memory-indexer.py search "Python programming" --and
+# Search (AND mode)
+python memory-indexer.py search "Python AI" --and
 
 # List all memories
 python memory-indexer.py list
 
-# View memory summary
+# Memory summary
 python memory-indexer.py summary
-```
 
-### Integration with OpenClaw
+## Integration with OpenClaw
 
-```bash
-# Use in OpenClaw workspace
 cd ~/.openclaw/workspace
 uv pip install jieba
 uv run python skills/memory-indexer/memory-indexer.py add "memory content"
-```
 
-### AGENTS.md Auto-Load Configuration
-
-Add the following to OpenClaw's `AGENTS.md` to ensure new sessions can检索记忆:
-
-```markdown
-### 🧠 Memory Indexer (Long-term Memory Retrieval)
-
-When you need to recall something, search in this order:
-
-1. **First use memory-indexer** (search keyword index)
-   ```bash
-   cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "keyword"
-   ```
-
-2. **Then use memory_search** (search raw memory files)
-   ```bash
-   memory_search query
-   ```
-
-This ensures: even if short-term memory is lost, you can retrieve past memories through the index.
-```
-
-
-### Heartbeat Auto Sync
-
-Add to `HEARTBEAT.md`:
-
-```markdown
-### Memory Index Sync
-- Command: `cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py sync`
-- Frequency: Every heartbeat
-```
-
-### Cron Scheduled Backup
-
-```bash
-crontab -e
-# Auto sync every day at 6 AM
-0 6 * * * cd /home/user/.openclaw/workspace && python skills/memory-indexer/memory-indexer.py sync
-```
+# Session backup & compact (runs on every heartbeat)
+uv run python skills/memory-indexer/session_backup.py
 
 ## Command Reference
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `add` | Add memory | `add "I learned Python today"` |
-| `search` | Search memories | `search "Python"` |
-| `search --and` | AND search | `search "Python AI" --and` |
-| `list` | List all memories | `list` |
-| `sync` | Sync external directory | `sync` |
-| `cleanup` | Clean stale indexes | `cleanup` |
-| `related` | Find related memories | `related` |
-| `timeline` | Show timeline | `timeline` |
-| `recall` | Active recall | `recall "Python"` |
-| `summary` | Memory summary | `summary` |
-| `star` | Mark important | `star 20260312.md` |
-| `stars` | View important memories | `stars` |
-| `status` | View status | `status` |
+add              Add memory              add "Today I learned Python"
+search           Search memory           search "Python"
+search --and     AND search              search "Python AI" --and
+list             List all memories       list
+sync             Sync external directory sync
+cleanup          Cleanup dead indexes    cleanup
+related          Related discovery       related
+timeline         Timeline view           timeline
+recall           Active reminder         recall "Python"
+summary          Memory summary          summary
+star             Mark important          star 20260312.md
+stars            View important memories stars
+status           View status             status
 
-## Configuration
+## Config
 
-The script automatically creates data files in the following directory:
+Data directory: ~/.memory-indexer/
+- index.json       keyword index
+- sync-state.json  sync state
+- stars.json      important memory marks
 
-```
-~/.memory-indexer/
-├── index.json          # Keyword index
-├── sync-state.json    # Sync state
-└── stars.json         # Important memory markers
-```
+Backup directory: ~/.openclaw/workspace/memory-index/session-backups/
 
-You can customize the storage path by modifying the `WORKSPACE` variable in the code.
-
-## Demo
-
-### Search Results
-```
-$ python memory-indexer.py search "xiaohongshu diary"
-
-Found 2 related memories (mode: OR):
-
-Keywords: xiaohongshu, diary
-
-📄 20260312_173114.md - 20260312_173114 🔥🔥
-   Today we tested voice recognition and discussed plans for xiaohongshu diary
-```
-
-### Memory Summary
-```
-$ python memory-indexer.py summary
-
-=== Memory Summary ===
-
-📊 Total memories: 14
-📊 Keyword count: 49
-
-📅 Recent activity:
-   2026-03-12: 34 entries
-   2026-03-11: 28 entries
-
-🔥 Hot keywords:
-   voice recognition: 5 entries
-   xiaohongshu: 3 entries
-   diary: 2 entries
-```
-
-### Related Discovery
-```
-$ python memory-indexer.py related
-
-=== Related Memory Discovery ===
-
-📎 voice-recognition-test.md ↔ openai-whisper-install.md
-   Common keywords: voice recognition, whisper, test
-
-📎 xiaohongshu-diary.md ↔ content-planning.md
-   Common keywords: xiaohongshu, diary, planning
-```
-
-## Tech Stack
-
-- **Python 3.8+** - Runtime
-- **jieba** - Chinese segmentation
-- **argparse** - CLI parsing
-- **json** - Data storage
-
-## Contributing
-
-Issues and Pull Requests are welcome!
-
-1. Fork this repository
-2. Create feature branch (`git checkout -b feature/xxx`)
-3. Commit changes (`git commit -m 'Add xxx'`)
-4. Push branch (`git push origin feature/xxx`)
-5. Create Pull Request
-
-## License
-
-This project is licensed under the [MIT](./LICENSE) license.
-
-## Author
-
-- Author: [@smallmj](https://github.com/smallmj)
-- Email: hexiealan007@gmail.com
+Modify WORKSPACE variable in code to customize storage path.
 
 ---
 
-If this project helps you, please ⭐ Star to show your support!
+Tech stack: Python 3.8+、jieba、argparse、json
+
+Contribute: Welcome to submit Issue and Pull Request!
+1. Fork this repo
+2. Create feature branch (git checkout -b feature/xxx)
+3. Commit changes (git commit -m 'Add xxx')
+4. Push branch (git push origin feature/xxx)
+5. Create Pull Request
+
+License: MIT
+
+Author: @smallmj | hexiealan007@gmail.com
+
+---
+
+If this project helps you, please ⭐ Star support!
