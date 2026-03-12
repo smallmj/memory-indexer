@@ -105,6 +105,28 @@ uv pip install jieba
 uv run python skills/memory-indexer/memory-indexer.py add "记忆内容"
 ```
 
+### AGENTS.md 自动加载配置
+
+在 OpenClaw 的 `AGENTS.md` 中添加以下规则，确保每次新会话都能检索记忆：
+
+```markdown
+### 🧠 Memory Indexer (长期记忆检索)
+
+当需要回忆某事时，必须按以下顺序搜索：
+
+1. **先用 memory-indexer 搜索**（检索关键词索引）
+   ```bash
+   cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"
+   ```
+
+2. **再用 memory_search 搜索**（检索原始记忆文件）
+   ```bash
+   memory_search query
+   ```
+
+这样可以确保：即使短期记忆丢失，也能通过索引找回之前的记忆内容。
+```
+
 ### 心跳自动同步
 
 在 `HEARTBEAT.md` 中添加：

@@ -103,6 +103,29 @@ uv pip install jieba
 uv run python skills/memory-indexer/memory-indexer.py add "memory content"
 ```
 
+### AGENTS.md Auto-Load Configuration
+
+Add the following to OpenClaw's `AGENTS.md` to ensure new sessions can检索记忆:
+
+```markdown
+### 🧠 Memory Indexer (Long-term Memory Retrieval)
+
+When you need to recall something, search in this order:
+
+1. **First use memory-indexer** (search keyword index)
+   ```bash
+   cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "keyword"
+   ```
+
+2. **Then use memory_search** (search raw memory files)
+   ```bash
+   memory_search query
+   ```
+
+This ensures: even if short-term memory is lost, you can retrieve past memories through the index.
+```
+
+
 ### Heartbeat Auto Sync
 
 Add to `HEARTBEAT.md`:

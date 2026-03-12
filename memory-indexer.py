@@ -734,3 +734,66 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ============ 可导入 API（供其他脚本调用）============
+
+def search(keyword: str, mode: str = "or") -> list:
+    """
+    搜索记忆（可导入函数）
+    
+    Args:
+        keyword: 搜索关键词
+        mode: "and" 或 "or"
+    
+    Returns:
+        list: 匹配的记忆列表
+    
+    Example:
+        from memory_indexer import search
+        results = search("语音识别")
+        for r in results:
+            print(r['file'], r['preview'])
+    """
+    index = load_index()
+    keyword = keyword.lower()
+    
+    if keyword not in index:
+        return []
+    
+    return index.get(keyword, [])
+
+
+def get_status() -> dict:
+    """
+    获取索引状态（可导入函数）
+    
+    Returns:
+        dict: 包含关键词数、文件数等信息的字典
+    """
+    index = load_index()
+    state = load_sync_state()
+    
+    file_count = set()
+    for items in index.values():
+        for item in items:
+            file_count.add(item["file"])
+    
+    return {
+        "keyword_count": len(index),
+        "file_count": len(file_count),
+        "synced_files": len(state.get("synced_files", {}))
+    }
+
+
+def recall(keyword: str) -> list:
+    """
+    主动提醒（可导入函数）
+    
+    Args:
+        keyword: 关键词
+    
+    Returns:
+        list: 相关记忆列表
+    """
+    return search(keyword)
