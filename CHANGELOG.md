@@ -5,11 +5,11 @@
 ## v1.0.8 (2026-03-13)
 
 ### English
-- 🎨 feat: 新增 memory_compact.py - Memory 文件精简脚本
-  - 备份 memory/*.md 到 memory-indexer
-  - 精简大文件到 ~10KB
-- ⚙️ config: AGENTS.md 启动流程更新为使用 user_id 搜索记忆
-- 🔄 integration: heartbeat 新增自动执行 memory_compact.py
+- 🎨 feat: Add memory_compact.py - Memory files compact script
+  - Backup memory/*.md to memory-indexer
+  - Compact large files to ~10KB
+- ⚙️ config: AGENTS.md startup flow updated to search memory using user_id
+- 🔄 integration: heartbeat now auto-runs memory_compact.py
 
 ### 中文
 - 🎨 feat: 新增 memory_compact.py - Memory 文件精简脚本
@@ -23,8 +23,8 @@
 ## v1.0.7 (2026-03-13)
 
 ### English
-- 🔧 fix: session_backup.py 改进消息提取，过滤 System: 和 JSON 元数据，只保留真正的用户消息
-- ✨ feat: memory-indexer.py 支持 --keywords 参数自定义关键词提取数量
+- 🔧 fix: session_backup.py improved message extraction, filter System: and JSON metadata, keep only real user messages
+- ✨ feat: memory-indexer.py supports --keywords parameter to customize keyword extraction count
 
 ### 中文
 - 🔧 fix: session_backup.py 改进消息提取，过滤 System: 和 JSON 元数据，只保留真正的用户消息
@@ -79,8 +79,8 @@
 ## v1.0.3 (2026-03-12)
 
 ### English
-- 📖 docs: 添加"为什么要精简 Session Memory"说明文档
-- 🔄 integration: README 说明 session_backup.py 用途和效果
+- 📖 docs: Added "Why Compact Session Memory" documentation
+- 🔄 integration: README explains session_backup.py purpose and effects
 
 ### 中文
 - 📖 docs: 添加"为什么要精简 Session Memory"说明文档
@@ -91,8 +91,8 @@
 ## v1.0.3 (2026-03-12)
 
 ### English
-- 🎨 feat: 添加 session_backup.py - 会话备份与精简脚本
-- 🔄 integration: heartbeat 自动备份会话内容到 indexer，精简原文件到 10KB
+- 🎨 feat: Add session_backup.py - Session backup and compact script
+- 🔄 integration: Heartbeat auto-backs up session content to indexer, compacts files to 10KB
 
 ### 中文
 - 🎨 feat: 添加 session_backup.py - 会话备份与精简脚本
