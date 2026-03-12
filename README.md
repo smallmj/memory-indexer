@@ -162,6 +162,9 @@ python memory-indexer.py summary
 cd ~/.openclaw/workspace
 uv pip install jieba
 uv run python skills/memory-indexer/memory-indexer.py add "记忆内容"
+
+# 会话备份与精简（可选，每次 heartbeat 自动运行）
+uv run python skills/memory-indexer/session_backup.py
 ```
 
 ### AGENTS.md 自动加载配置
