@@ -109,13 +109,53 @@ cd memory-indexer
 # 2. 安装依赖
 pip install -r requirements.txt
 
-# 3. 首次运行
-python3 memory-indexer.py status
+# 3. 创建软链接到 OpenClaw skills 目录
+ln -sf "$(pwd)" ~/.openclaw/workspace/skills/memory-indexer
 
-# 4. （可选）会话备份与精简
-#    每次 heartbeat 自动运行，也可手动执行：
-python3 session_backup.py
+# 4. 首次运行
+python3 memory-indexer.py status
 ```
+
+### 自动配置（安装脚本）
+
+运行 `install.sh` 会自动完成以下配置：
+
+| 文件 | 配置内容 | 作用 |
+|------|---------|------|
+| `AGENTS.md` | 检索记忆的规则 | 新会话时自动搜索相关记忆 |
+| `MEMORY.md` | 强制规则：保存/新会话时调用 indexer | 自动建立索引、自动检索 |
+| `HEARTBEAT.md` | 定期同步 + 会话备份 | 自动备份和精简 session memory |
+
+**手动配置（不运行 install.sh）：**
+
+如果你不想运行安装脚本，需要手动在 OpenClaw workspace 中添加以下配置：
+
+1. **AGENTS.md** - 启动流程检索记忆：
+```markdown
+### 🧠 Memory Indexer
+当需要回忆某事时，必须按以下顺序搜索：
+1. 先用 memory-indexer 搜索
+2. 再用 memory_search 搜索
+```
+
+2. **MEMORY.md** - 强制规则：
+```markdown
+## 强制规则
+2. 保存记忆时 - 必须同时调用 memory-indexer 建立索引
+3. 新会话开始时 - 自动调用 memory-indexer 搜索相关记忆
+```
+
+3. **HEARTBEAT.md** - 定期任务：
+```markdown
+### 记忆索引同步
+- 命令：cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py sync
+
+### 会话备份与精简
+- 命令：cd ~/.openclaw/workspace && uv run python skills/memory-indexer/session_backup.py
+- 频率：每次 heartbeat
+```
+
+---
 
 ### 更新
 
