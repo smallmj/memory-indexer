@@ -83,3 +83,141 @@
 - 🐛 fix: memory_compact.py 现在支持通过命令行参数指定自定义路径
 - 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
 - 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
+
+---
+
+## v1.0.8 (2026-03-13)
+
+### English
+- 🔧 fix: session_backup.py improved message extraction, filter System: and JSON metadata, keep only real user messages
+- ✨ feat: memory-indexer.py supports --keywords parameter to customize keyword extraction count
+
+### 中文
+- 🔧 fix: session_backup.py 改进消息提取，过滤 System: 和 JSON 元数据，只保留真正的用户消息
+- ✨ feat: memory-indexer.py 支持 --keywords 参数自定义关键词提取数量
+
+---
+
+## v1.0.5 (2026-03-12)
+
+### English
+- ⚙️ config: install.sh now includes Hook installation (memory-indexer-on-new)
+- 📖 docs: README added manual Hook installation instructions
+- 🔄 integration: install.sh automatically copies Hook to ~/.openclaw/hooks/
+
+### 中文
+- ⚙️ config: install.sh 新增 Hook 安装（memory-indexer-on-new）
+- 📖 docs: README 添加手动安装 Hook 说明
+- 🔄 integration: install.sh 自动复制 Hook 到 ~/.openclaw/hooks/
+
+---
+
+## v1.0.5 (2026-03-12)
+
+### English
+- 🎨 feat: Add `hooks/memory-indexer-on-new` - OpenClaw hook for auto-searching memories on new conversation
+  - Location: `~/.openclaw/hooks/memory-indexer-on-new/`
+  - Listens for `/new` command, automatically calls memory-indexer to search
+  - Enabled by default, takes effect after gateway restart
+- 🔄 integration: Session backup now runs via heartbeat (not cron - the cron task was misconfigured)
+- 🐛 fix: Removed erroneous cron task "session精简" which only sent a message without executing the script
+
+### 中文
+- 🎨 feat: 新增 `hooks/memory-indexer-on-new` - 新对话自动搜索记忆的 OpenClaw Hook
+  - 位置：`~/.openclaw/hooks/memory-indexer-on-new/`
+  - 监听 `/new` 命令，自动调用 memory-indexer 搜索相关记忆
+  - 默认启用，gateway 重启后生效
+- 🔄 integration: Session 备份改为通过 heartbeat 执行（而非 cron，原 cron 任务配置错误）
+- 🐛 fix: 删除错误的 cron 任务"session精简"（只发消息不执行脚本）
+
+---
+
+## v1.0.4 (2026-03-12)
+
+### English
+- ⚙️ config: install.sh MEMORY rule added "auto-search memory when new session starts"
+
+### 中文
+- ⚙️ config: install.sh MEMORY 规则新增"新会话开始时自动搜索记忆"
+
+---
+
+## v1.0.3 (2026-03-12)
+
+### English
+- 📖 docs: 添加"为什么要精简 Session Memory"说明文档
+- 🔄 integration: README 说明 session_backup.py 用途和效果
+
+### 中文
+- 📖 docs: 添加"为什么要精简 Session Memory"说明文档
+- 🔄 integration: README 说明 session_backup.py 用途和效果
+
+---
+
+## v1.0.3 (2026-03-12)
+
+### English
+- 🎨 feat: 添加 session_backup.py - 会话备份与精简脚本
+- 🔄 integration: heartbeat 自动备份会话内容到 indexer，精简原文件到 10KB
+
+### 中文
+- 🎨 feat: 添加 session_backup.py - 会话备份与精简脚本
+- 🔄 integration: heartbeat 自动备份会话内容到 indexer，精简原文件到 10KB
+
+---
+
+## v1.0.2 (2026-03-12)
+
+### English
+- 🎨 feat: install.sh auto-configures MEMORY.md and HEARTBEAT.md rules
+- 🔄 integration: One-click install completes all OpenClaw configurations
+
+### 中文
+- 🎨 feat: install.sh 自动配置 MEMORY.md 和 HEARTBEAT.md 规则
+- 🔄 integration: 一键安装自动完成所有 OpenClaw 配置
+
+---
+
+## v1.0.1 (2026-03-12)
+
+### English
+- 🐛 fix: Fix duplicate search results display bug
+- 📁 refactor: Move index data directory to skills/memory-indexer/data/
+
+### 中文
+- 🐛 fix: 修复搜索结果重复显示的 bug
+- 📁 refactor: 索引数据目录移到 skills/memory-indexer/data/
+
+---
+
+## v1.0.0 (2026-03-12)
+
+### English
+- ✅ Initial release
+- ✅ Automatic keyword extraction (jieba Chinese segmentation)
+- ✅ Keyword index system
+- ✅ Multi-keyword search (AND/OR mode)
+- ✅ Related discovery
+- ✅ Timeline view
+- ✅ Proactive recall
+- ✅ Memory summary
+- ✅ Important memory star
+- ✅ Incremental sync
+- ✅ Cleanup invalid indexes
+- ✅ Importable API
+- ✅ Install/update scripts
+
+### 中文
+- ✅ 首次发布
+- ✅ 自动关键词提取（jieba 中文分词）
+- ✅ 关键词索引系统
+- ✅ 多关键词搜索（AND/OR 模式）
+- ✅ 关联发现
+- ✅ 时间线视图
+- ✅ 主动提醒
+- ✅ 记忆摘要
+- ✅ 重要记忆标记
+- ✅ 增量同步
+- ✅ 失效清理
+- ✅ 可导入 API
+- ✅ 安装/更新脚本
