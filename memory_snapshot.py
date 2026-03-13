@@ -11,16 +11,24 @@ import shutil
 from pathlib import Path
 from datetime import datetime
 
-# 配置
-WORKSPACE = Path.home() / ".openclaw" / "agents" / "github-workflow"
-MEMORY_DIR = WORKSPACE / "memory"
-SNAPSHOT_DIR = WORKSPACE / "memory-indexer" / "snapshots"
+# 导入配置模块
+from memory_config import (
+    load_config, get_memory_dir, get_snapshot_dir, get_workspace
+)
+
+# 加载配置
+config = load_config()
+
+# 获取路径配置
+WORKSPACE = get_workspace()
+MEMORY_DIR = get_memory_dir()
+SNAPSHOT_DIR = get_snapshot_dir()
 INDEX_FILE = WORKSPACE / "memory-indexer" / "memory_index.json"
 STARS_FILE = WORKSPACE / "memory-indexer" / "stars.json"
 
-# 阈值 (MB)
-WARNING_THRESHOLD = 70
-CRITICAL_THRESHOLD = 85
+# 阈值从配置获取
+WARNING_THRESHOLD = config.get("warning_threshold", 70)
+CRITICAL_THRESHOLD = config.get("critical_threshold", 85)
 
 
 def ensure_dirs():
@@ -162,12 +170,15 @@ def main():
         # 默认显示统计
         print("📦 Memory Indexer - 快照管理")
         print("=" * 50)
+        print(f"阈值配置: WARNING={WARNING_THRESHOLD}MB, CRITICAL={CRITICAL_THRESHOLD}MB")
+        print()
         list_snapshots()
         print("\n用法:")
         print("  python memory_snapshot.py create      # 创建快照")
         print("  python memory_snapshot.py list        # 列出快照")
         print("  python memory_snapshot.py restore <name>  # 恢复快照")
         print("  python memory_snapshot.py auto        # 检查并自动快照")
+        print(f"\n💾 配置文件: ~/.memory-indexer/config.json")
         return
 
     command = sys.argv[1]
