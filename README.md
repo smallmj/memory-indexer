@@ -80,7 +80,22 @@ python3 memory-indexer.py status
 
 如果你不想运行安装脚本，需要手动在 OpenClaw workspace 中添加以下配置：
 
-1. **AGENTS.md** - 启动流程检索记忆
+1. **AGENTS.md** - 启动流程检索记忆 + 主动搜索规则
+   ```markdown
+   ## 记忆系统（强制规则）
+
+   ### 搜索顺序（必须遵守）
+   1. **memory-indexer** - 关键词索引搜索（**最先**）
+   2. **memory_search** - 原始记忆文件搜索
+   3. **直接读文件** - 仅当前会话内容
+
+   ### 主动搜索规则
+   当用户提到以下关键词时，**立即主动调用 memory-indexer**：
+   - "找找"、"为什么"、"原因"
+   - "之前"、"记得"
+   - "设置被改动"、"修改"
+   ```
+
 2. **MEMORY.md** - 强制规则：保存/新会话时调用 indexer
 3. **HEARTBEAT.md** - 定期同步 + 会话备份
 
