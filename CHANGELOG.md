@@ -2,7 +2,7 @@
 
 ---
 
-## v1.0.9 (2026-03-13)
+## v1.0.10 (2026-03-13)
 
 ### English
 - 📝 docs: Update AGENTS.md and install.sh with proactive search rules
