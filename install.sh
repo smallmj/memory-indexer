@@ -38,7 +38,7 @@ echo "📦 安装依赖..."
 if python3 -c "import jieba" 2>/dev/null; then
     echo "✅ jieba 已安装"
 else
-    pip install jieba || pip3 install jieba
+    uv pip install jieba || pip3 install jieba
     echo "✅ jieba 安装完成"
 fi
 
