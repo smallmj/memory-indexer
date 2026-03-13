@@ -12,6 +12,17 @@
   - Add --skip-hooks option to skip hooks update
   - Auto-update soft links, config files and Hooks
   - Add help info and color output
+- 📊 feat: Add memory_detect.py - Compression risk detection
+  - Detect memory directory size and estimate context usage
+  - Show risk level: safe/warning/critical
+  - Provide recommendations based on risk level
+- 📊 feat: Add memory_stats.py - Usage statistics
+  - Show memory file count, size, keywords count
+  - List recent modified files with stars
+- 📦 feat: Add memory_snapshot.py - Snapshot management
+  - Create/restore snapshots before compression
+  - Auto-snapshot when risk level reaches threshold
+  - Support listing and restoring snapshots
 
 ### 中文
 - 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
@@ -19,6 +30,17 @@
   - 添加 --skip-hooks 选项跳过 Hook 更新
   - 自动更新软链接、配置文件和 Hooks
   - 添加帮助信息和彩色输出
+- 📊 feat: 添加 memory_detect.py - 压缩风险检测
+  - 检测 memory 目录大小，估算上下文使用量
+  - 显示风险等级：safe/warning/critical
+  - 根据风险等级提供建议
+- 📊 feat: 添加 memory_stats.py - 使用统计
+  - 显示 memory 文件数量、大小、关键词数
+  - 列出最近修改的文件及星标状态
+- 📦 feat: 添加 memory_snapshot.py - 快照管理
+  - 压缩前创建/恢复快照
+  - 当风险等级达到阈值时自动快照
+  - 支持列出和恢复快照
 
 ---
 
