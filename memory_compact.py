@@ -51,7 +51,12 @@ def parse_args():
         help=f"memory-indexer 目录 (默认: {DEFAULT_INDEXER_DIR})"
     )
     parser.add_argument(
-        "--max-size", "-s",
+        "--auto-snapshot", "-a",
+        action="store_true",
+        help="在精简前自动创建快照"
+    )
+    parser.add_argument(
+        "--max-size", "-M",
         type=int,
         default=DEFAULT_MAX_SIZE_KB,
         help=f"精简后最大 KB 数 (默认: {DEFAULT_MAX_SIZE_KB})"
@@ -138,8 +143,28 @@ def backup_to_indexer(md_path):
 
 
 def main():
+    global MEMORY_DIR, MEMORY_INDEXER_DIR
+    
     print("📦 Memory Files Compact")
     print("=" * 40)
+    
+    # 自动快照：如果指定了 --auto-snapshot 参数
+    if hasattr(args, 'auto_snapshot') and args.auto_snapshot:
+        print("🔄 自动快照模式：正在创建快照...")
+        snapshot_script = MEMORY_INDEXER_DIR / "memory_snapshot.py"
+        if snapshot_script.exists():
+            import subprocess
+            result = subprocess.run(
+                ["python3", str(snapshot_script), "create", "auto_compact"],
+                capture_output=True, text=True
+            )
+            if result.returncode == 0:
+                print("  ✅ 快照已创建")
+            else:
+                print(f"  ⚠️ 快照创建失败: {result.stderr[:100]}")
+        else:
+            print("  ⚠️ memory_snapshot.py 不存在，跳过快照")
+        print()
     
     # 获取所有 .md 文件
     md_files = sorted(MEMORY_DIR.glob("*.md"), key=lambda x: x.stat().st_mtime, reverse=True)
