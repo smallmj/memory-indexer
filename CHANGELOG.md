@@ -6,23 +6,15 @@
 
 ## Unreleased (feature)
 
+---
+
+## v1.0.10 (2026-03-13)
+
 ### English
 - 📝 docs: Update AGENTS.md and install.sh with proactive search rules
   - Add memory search order: memory-indexer first
   - Add proactive search triggers: "找找", "为什么", "之前", "记得"
   - Search automatically when user mentions historical context
-
-### 中文
-- 📝 docs: 更新 AGENTS.md 和 install.sh，添加主动搜索规则
-  - 添加记忆搜索顺序：memory-indexer 最先
-  - 添加主动搜索触发词："找找"、"为什么"、"之前"、"记得"
-  - 用户提到历史相关内容时自动搜索
-
----
-
-## v1.0.9 (2026-03-13)
-
-### English
 - 🔧 fix: update.sh now supports auto-update of OpenClaw config files (AGENTS.md, MEMORY.md, HEARTBEAT.md) and Hooks
   - Add --skip-config option to skip config update
   - Add --skip-hooks option to skip hooks update
@@ -41,6 +33,10 @@
   - Support listing and restoring snapshots
 
 ### 中文
+- 📝 docs: 更新 AGENTS.md 和 install.sh，添加主动搜索规则
+  - 添加记忆搜索顺序：memory-indexer 最先
+  - 添加主动搜索触发词："找找"、"为什么"、"之前"、"记得"
+  - 用户提到历史相关内容时自动搜索
 - 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
   - 添加 --skip-config 选项跳过配置更新
   - 添加 --skip-hooks 选项跳过 Hook 更新
@@ -60,7 +56,7 @@
 
 ---
 
-## v1.0.8 (2026-03-13)
+## v1.0.9 (2026-03-13)
 
 ### English
 - 🎨 feat: Add memory_compact.py - Memory files compact script
@@ -87,15 +83,3 @@
 - 🐛 fix: memory_compact.py 现在支持通过命令行参数指定自定义路径
 - 🐛 fix: session_backup.py 现在支持通过命令行参数指定自定义路径
 - 🔧 fix: 关键词提取现在会过滤 GitHub Token（ghp_xxx, gho_xxx 等）和其他常见 API Token
-
----
-
-## v1.0.7 (2026-03-13)
-
-### English
-- 🔧 fix: session_backup.py improved message extraction, filter System: and JSON metadata, keep only real user messages
-- ✨ feat: memory-indexer.py supports --keywords parameter to customize keyword extraction count
-
-### 中文
-- 🔧 fix: session_backup.py 改进消息提取，过滤 System: 和 JSON 元数据，只保留真正的用户消息
-- ✨ feat: memory-indexer.py 支持 --keywords 参数自定义关键词提取数量
