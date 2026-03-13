@@ -2,7 +2,7 @@
 
 ---
 
-## v1.0.8 (2026-03-13)
+## v1.0.9 (2026-03-13)
 
 ### English
 - 🔧 fix: update.sh now supports auto-update of OpenClaw config files (AGENTS.md, MEMORY.md, HEARTBEAT.md) and Hooks
@@ -42,7 +42,7 @@
 
 ---
 
-## v1.0.8 (2026-03-13)
+## v1.0.9 (2026-03-13)
 
 ### English
 - 🎨 feat: Add memory_compact.py - Memory files compact script
