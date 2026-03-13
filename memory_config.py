@@ -39,8 +39,9 @@ DEFAULT_CONFIG = {
     },
 }
 
-# 配置文件路径
-CONFIG_FILE = Path.home() / ".memory-indexer" / "config.json"
+# 配置文件路径（支持环境变量覆盖）
+_CONFIG_FILE = os.getenv("MEMORY_INDEXER_CONFIG", ".memory-indexer/config.json")
+CONFIG_FILE = Path.home() / _CONFIG_FILE
 
 
 def get_config_path() -> Path:
