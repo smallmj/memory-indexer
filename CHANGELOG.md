@@ -7,6 +7,10 @@
 ## Unreleased (feature)
 
 ### English
+- 📝 docs: Update AGENTS.md and install.sh with proactive search rules
+  - Add memory search order: memory-indexer first
+  - Add proactive search triggers: "找找", "为什么", "之前", "记得"
+  - Search automatically when user mentions historical context
 - 🔧 fix: update.sh now supports auto-update of OpenClaw config files (AGENTS.md, MEMORY.md, HEARTBEAT.md) and Hooks
   - Add --skip-config option to skip config update
   - Add --skip-hooks option to skip hooks update
@@ -25,6 +29,10 @@
   - Support listing and restoring snapshots
 
 ### 中文
+- 📝 docs: 更新 AGENTS.md 和 install.sh，添加主动搜索规则
+  - 添加记忆搜索顺序：memory-indexer 最先
+  - 添加主动搜索触发词："找找"、"为什么"、"之前"、"记得"
+  - 用户提到历史相关内容时自动搜索
 - 🔧 fix: update.sh 现在支持自动更新 OpenClaw 配置文件（AGENTS.md, MEMORY.md, HEARTBEAT.md）和 Hooks
   - 添加 --skip-config 选项跳过配置更新
   - 添加 --skip-hooks 选项跳过 Hook 更新
