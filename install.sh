@@ -62,6 +62,25 @@ echo ""
 echo "📝 配置 AGENTS.md..."
 AGENTS_FILE="$WORKSPACE/AGENTS.md"
 MEMORY_INDEXER_RULE='
+## 记忆系统（强制规则）
+
+### 搜索顺序（必须遵守）
+1. **memory-indexer** - 关键词索引搜索（**最先**）
+2. **memory_search** - 原始记忆文件搜索
+3. **直接读文件** - 仅当前会话内容
+
+### 主动搜索规则
+当用户提到以下关键词时，**立即主动调用 memory-indexer**，无需等用户指令：
+- "找找"、"为什么"、"原因"
+- "之前"、"记得"
+- "设置被改动"、"修改"
+- 任何需要回忆历史操作的情况
+
+### 搜索命令
+```bash
+cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "user_id 关键词"
+```
+
 ### 🧠 Memory Indexer (长期记忆检索)
 
 当需要回忆某事时，必须按以下顺序搜索：

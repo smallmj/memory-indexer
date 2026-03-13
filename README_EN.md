@@ -122,7 +122,7 @@ uv run python skills/memory-indexer/session_backup.py
 
 ### Hook: Auto-search on New Conversation
 
-Starting from v1.0.7, provides OpenClaw Hook `memory-indexer-on-new` to automatically search related memories when a new conversation starts.
+Starting from v1.0.9, provides OpenClaw Hook `memory-indexer-on-new` to automatically search related memories when a new conversation starts.
 
 **Install Hook:**
 
