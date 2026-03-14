@@ -65,29 +65,42 @@ MEMORY_INDEXER_RULE='
 ## 记忆系统（强制规则）
 
 ### 搜索顺序（必须遵守）
-1. **memory-indexer** - 关键词索引搜索（**最先**）
+1. **memory-indexer** - 三级级联搜索（**最先**）
+   - 第1层：关键词搜索
+   - 第2层：向量语义搜索（如向量可用）
+   - 第3层：原文全文搜索
 2. **memory_search** - 原始记忆文件搜索
 3. **直接读文件** - 仅当前会话内容
 
-### 主动搜索规则
-当用户提到以下关键词时，**立即主动调用 memory-indexer**，无需等用户指令：
-- "找找"、"为什么"、"原因"
-- "之前"、"记得"
-- "设置被改动"、"修改"
-- 任何需要回忆历史操作的情况
+### 主动搜索规则（Agent 智能判断）
+Agent 根据问题内容主动判断是否搜索：
+- 用户提到"之前"、"记得"、"有没有"
+- 用户问"找找"、"为什么"、"原因"
+- 讨论特定项目/任务时
+- 不盲目搜索，避免浪费 token
 
 ### 搜索命令
 ```bash
-cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "user_id 关键词"
+# 三级级联搜索（默认）
+cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"
+
+# 只用关键词搜索
+cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词" --keyword
+
+# 只用向量搜索
+cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词" --semantic
+
+# 只用原文搜索
+cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词" --raw
 ```
 
 ### 🧠 Memory Indexer (长期记忆检索)
 
 当需要回忆某事时，必须按以下顺序搜索：
 
-1. **先用 memory-indexer 搜索**（检索关键词索引）
-   - 使用 user_id + 关键词搜索
-   - 搜索"偏好"、"项目"、"任务"等通用关键词
+1. **先用 memory-indexer 搜索**（三级级联检索）
+   - 自动按关键词→向量→原文顺序搜索
+   - 支持 semantic（纯向量）、raw（纯原文）模式
    ```bash
    cd ~/.openclaw/workspace && uv run python skills/memory-indexer/memory-indexer.py search "关键词"
    ```
