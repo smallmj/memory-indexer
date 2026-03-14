@@ -4,7 +4,7 @@
 
 ---
 
-## v1.1.0 (2026-03-14)
+## v2.0.0 (2026-03-14)
 
 ### English
 - 🎨 feat: Add three-level cascade search (keyword → vector → raw text)
