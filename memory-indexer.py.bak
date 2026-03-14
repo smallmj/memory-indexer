@@ -50,14 +50,6 @@ except ImportError:
     JIEBA_AVAILABLE = False
     print("警告: jieba 未安装，使用简单分词方案")
 
-# 尝试导入 embedding 模块（用于向量搜索）
-try:
-    from embedding import search_semantic, get_embedding, get_vector_status
-    EMBEDDING_AVAILABLE = True
-except ImportError:
-    EMBEDDING_AVAILABLE = False
-    # 向量搜索不可用时静默跳过
-
 # 配置
 WORKSPACE = Path.home() / ".openclaw" / "workspace"
 MEMORY_DIR = Path(__file__).parent / "data"
@@ -325,195 +317,10 @@ def search_memories(query: str, mode: str = "or"):
     print(f"找到 {len(results)} 条相关记忆 (模式: {mode.upper()}):\n")
     print(f"关键词: {', '.join(valid_keywords)}\n")
     for item in results:
-        score_indicator = "🔥" * min(int(item.get("score", 0) * 10), 3)
+        score_indicator = "🔥" * min(item.get("score", 0) // 10, 3)
         print(f"📄 {item['file']} - {item['time']} {score_indicator}")
         print(f"   {item['preview']}")
         print()
-
-def search_raw_memories(query: str, top_k: int = 10) -> list:
-    """
-    原文搜索 - 在记忆文件内容中搜索包含查询词的记录
-    
-    Args:
-        query: 查询词
-        top_k: 返回结果数量
-        
-    Returns:
-        list: 匹配的记录列表
-    """
-    from pathlib import Path
-    
-    # 搜索内部记忆目录和外部记忆目录
-    search_dirs = [MEMORY_DIR, EXTERNAL_MEMORY_DIR]
-    
-    results = []
-    query_lower = query.lower()
-    
-    for search_dir in search_dirs:
-        if not search_dir.exists():
-            continue
-            
-        for f in search_dir.glob("*.md"):
-            try:
-                with open(f, "r", encoding="utf-8") as file:
-                    content = file.read()
-                    
-                # 检查内容是否包含查询词
-                if query_lower in content.lower():
-                    # 计算出现次数作为分数
-                    count = content.lower().count(query_lower)
-                    
-                    # 提取预览（前200字符）
-                    preview = content[:200].replace("\n", " ")
-                    
-                    # 获取文件时间
-                    import time
-                    mtime = time.localtime(f.stat().st_mtime)
-                    time_str = time.strftime("%Y-%m-%d %H:%M", mtime)
-                    
-                    results.append({
-                        "file": f.name,
-                        "time": time_str,
-                        "preview": preview,
-                        "score": count,
-                        "layer": 3  # 标记为第三层
-                    })
-            except Exception:
-                continue
-    
-    # 按分数降序排序
-    results.sort(key=lambda x: x.get("score", 0), reverse=True)
-    return results[:top_k]
-
-
-def search_hybrid(query: str, top_k: int = 10) -> list:
-    """
-    三级级联搜索：
-    1. 关键词搜索（最高优先级）
-    2. 向量语义搜索
-    3. 原文全文搜索
-    
-    Args:
-        query: 查询词
-        top_k: 返回结果数量
-        
-    Returns:
-        list: 合并后的搜索结果
-    """
-    seen_files = set()
-    all_results = []
-    
-    # 第1层：关键词搜索
-    print("🔍 第1层：关键词搜索...")
-    keyword_results = search_memories(query, mode="or")
-    # search_memories 会直接打印结果，这里需要手动收集
-    # 所以我们用另一种方式 - 调用内部函数
-    
-    # 重新实现关键词搜索逻辑（不打印）
-    index = load_index()
-    query_lower = query.lower()
-    query_clean = query_lower.replace(",", " ").replace(" and ", " ")
-    keywords = [k.strip() for k in query_clean.split() if k.strip() and k.strip() not in STOPWORDS]
-    
-    if keywords:
-        # 快速搜索
-        keyword_matches = set()
-        for kw in keywords:
-            if kw in index:
-                for item in index[kw]:
-                    keyword_matches.add(item["file"])
-        
-        # 获取文件内容
-        for file_key in keyword_matches:
-            preview = ""
-            time_val = ""
-            for tag, items in index.items():
-                for item in items:
-                    if item["file"] == file_key:
-                        preview = item.get("preview", "")
-                        time_val = item.get("time", "")
-                        break
-            all_results.append({
-                "file": file_key,
-                "time": time_val,
-                "preview": preview,
-                "score": 100,  # 关键词匹配最高分
-                "layer": 1
-            })
-            seen_files.add(file_key)
-    
-    if all_results:
-        print(f"   ✓ 找到 {len(all_results)} 条结果")
-    else:
-        print("   ✗ 无结果")
-    
-    # 第2层：向量语义搜索
-    if EMBEDDING_AVAILABLE:
-        print("🔍 第2层：向量语义搜索...")
-        try:
-            vector_results = search_semantic(query, top_k=top_k)
-            if vector_results:
-                for r in vector_results:
-                    if r["file"] not in seen_files:
-                        r["layer"] = 2
-                        all_results.append(r)
-                        seen_files.add(r["file"])
-                print(f"   ✓ 找到 {len(vector_results)} 条新结果")
-            else:
-                print("   ✗ 无新结果")
-        except Exception as e:
-            print(f"   ✗ 向量搜索失败: {e}")
-    else:
-        print("🔍 第2层：向量语义搜索... (未启用)")
-    
-    # 第3层：原文搜索
-    print("🔍 第3层：原文搜索...")
-    raw_results = search_raw_memories(query, top_k=top_k)
-    new_raw_count = 0
-    for r in raw_results:
-        if r["file"] not in seen_files:
-            r["layer"] = 3
-            all_results.append(r)
-            seen_files.add(r["file"])
-            new_raw_count += 1
-    
-    if new_raw_count > 0:
-        print(f"   ✓ 找到 {new_raw_count} 条新结果")
-    else:
-        print("   ✗ 无新结果")
-    
-    # 按分数和层级排序（层级优先）
-    all_results.sort(key=lambda x: (x.get("layer", 99), -x.get("score", 0)))
-    
-    return all_results[:top_k]
-
-
-def display_search_results(results: list, query: str, show_layer: bool = False):
-    """显示搜索结果"""
-    if not results:
-        print("\n未找到相关记忆")
-        return
-    
-    print(f"\n找到 {len(results)} 条相关记忆:\n")
-    
-    for i, item in enumerate(results, 1):
-        layer_info = ""
-        if show_layer:
-            layer_names = {1: "关键词", 2: "向量", 3: "原文"}
-            layer_info = f" [{layer_names.get(item.get('layer'), '?')}]"
-        
-        score_indicator = "🔥" * min(int(item.get("score", 0) * 10), 3)
-        print(f"{i}. 📄 {item['file']} - {item.get('time', '')} {score_indicator}{layer_info}")
-        preview = item.get("preview", "")
-        if preview:
-            # 关键词高亮
-            query_words = query.lower().split()
-            for qw in query_words:
-                if len(qw) > 1:
-                    preview = preview.replace(qw, f"**{qw}**")
-            print(f"   {preview[:120]}...")
-        print()
-
 
 def list_memories():
     """列出所有记忆"""
@@ -891,83 +698,36 @@ def list_stars():
 
 def main():
     parser = argparse.ArgumentParser(description="Memory Indexer - 短期记忆关键词索引工具")
-    parser.add_argument("command", help="子命令: add, search, list, sync, status, keywords, cleanup, related, timeline, recall, summary, star, stars, vector")
+    parser.add_argument("command", help="子命令: add, search, list, sync, status, keywords, cleanup, related, timeline, recall, summary, star, stars")
     parser.add_argument("args", nargs="*", help="参数")
     parser.add_argument("--watch", "-w", action="store_true", help="监控模式（增量同步）")
     parser.add_argument("--and", dest="use_and", action="store_true", help="AND 模式搜索（所有关键词都匹配）")
     parser.add_argument("--keywords", "-k", type=int, default=10, help="关键词提取数量（默认10）")
-    # 搜索模式参数
-    parser.add_argument("--keyword", dest="use_keyword", action="store_true", help="只用关键词搜索")
-    parser.add_argument("--semantic", dest="use_semantic", action="store_true", help="只用向量语义搜索")
-    parser.add_argument("--raw", dest="use_raw", action="store_true", help="只用原文搜索")
-    parser.add_argument("--hybrid", dest="use_hybrid", action="store_true", help="三级级联搜索（默认）")
-    parser.add_argument("--top-k", type=int, default=10, help="返回结果数量（默认10）")
-    parser.add_argument("--embed", dest="embed", action="store_true", help="add 命令：同时生成向量")
     
     args = parser.parse_args()
     command = args.command
     
     if command == "add":
-        # 添加记忆: python3 memory-indexer.py add "记忆内容" [标签1 标签2 ...] [--keywords 20] [--embed]
+        # 添加记忆: python3 memory-indexer.py add "记忆内容" [标签1 标签2 ...] [--keywords 20]
         if len(args.args) < 1:
-            print("用法: python3 memory-indexer.py add \"记忆内容\" [标签1 标签2 ...] [--keywords 20] [--embed]")
+            print("用法: python3 memory-indexer.py add \"记忆内容\" [标签1 标签2 ...] [--keywords 20]")
             print("示例: python3 memory-indexer.py add \"今天学习了 Python\"")
             print("     python3 memory-indexer.py add \"项目进度\" 重要 里程碑 --keywords 15")
-            print("     python3 memory-indexer.py add \"今天天气很好\" --embed  # 同时生成向量")
             sys.exit(1)
         content = args.args[0]
         tags = args.args[1:] if len(args.args) > 1 else []
         add_memory(content, tags, topk=args.keywords)
-        
-        # 如果指定了 --embed 参数，同时生成向量
-        if hasattr(args, 'embed') and args.embed:
-            from embedding import add_vector
-            import time
-            now = time.strftime("%Y%m%d_%H%M%S")
-            filename = f"{now}.md"
-            add_vector(filename, content, content[:200], now)
     
     elif command == "search":
-        # 搜索记忆
+        # 搜索记忆: python3 memory-indexer.py search "关键词" [--and]
         if len(args.args) < 1:
-            print("用法: python3 memory-indexer.py search \"关键词\" [选项]")
+            print("用法: python3 memory-indexer.py search \"关键词\" [--and]")
             print("示例: python3 memory-indexer.py search Python")
             print("     python3 memory-indexer.py search \"Python 机器学习\" --and")
-            print("     python3 memory-indexer.py search \"今天天气\" --semantic  # 向量搜索")
-            print("     python3 memory-indexer.py search \"项目\" --raw           # 原文搜索")
-            print("     python3 memory-indexer.py search \"学习\"                 # 三级搜索（默认）")
-            print("\n选项:")
-            print("  --keyword   只用关键词搜索")
-            print("  --semantic  只用向量语义搜索")
-            print("  --raw       只用原文搜索")
-            print("  --hybrid    三级级联搜索（默认）")
-            print("  --and       AND 模式（所有关键词都匹配）")
-            print("  --top-k     返回结果数量（默认10）")
+            print("选项: --and   AND 模式（所有关键词都匹配）")
             sys.exit(1)
-        
-        query = args.args[0]
-        
-        # 确定搜索模式
-        if args.use_keyword:
-            # 只用关键词
-            mode = "and" if args.use_and else "or"
-            search_memories(query, mode=mode)
-        elif args.use_semantic:
-            # 只用向量语义搜索
-            if EMBEDDING_AVAILABLE:
-                results = search_semantic(query, top_k=args.top_k)
-                display_search_results(results, query, show_layer=True)
-            else:
-                print("错误: 向量搜索未启用（embedding 模块不可用）")
-                print("提示: 请确保 embedding.py 存在且 MINIMAX_API_KEY 已配置")
-        elif args.use_raw:
-            # 只用原文搜索
-            results = search_raw_memories(query, top_k=args.top_k)
-            display_search_results(results, query, show_layer=True)
-        else:
-            # 三级级联搜索（默认）
-            results = search_hybrid(query, top_k=args.top_k)
-            display_search_results(results, query, show_layer=True)
+        mode = "and" if args.use_and else "or"
+        search_memories(args.args[0], mode=mode)
     
     elif command == "list":
         list_memories()
@@ -1035,61 +795,6 @@ def main():
             sys.exit(1)
         keywords = extract_keywords(args.args[0])
         print("关键词:", ", ".join(keywords))
-    
-    elif command == "vector":
-        # 向量管理命令
-        if not EMBEDDING_AVAILABLE:
-            print("错误: embedding 模块不可用")
-            print("提示: 请确保 embedding.py 存在")
-            sys.exit(1)
-        
-        if len(args.args) < 1:
-            print("用法: python3 memory-indexer.py vector <子命令>")
-            print("子命令:")
-            print("  status              查看向量索引状态")
-            print("  test                测试向量生成")
-            print("  reindex             批量重新生成向量")
-            print("  reindex --memory-dir <路径>  从指定目录生成向量")
-            sys.exit(1)
-        
-        vector_subcommand = args.args[0]
-        
-        if vector_subcommand == "status":
-            status = get_vector_status()
-            print(f"向量索引: {status['total']} 条")
-            if status.get('files'):
-                print(f"示例文件: {status['files'][:5]}")
-        
-        elif vector_subcommand == "test":
-            print("测试向量生成...")
-            vec = get_embedding("今天天气很好")
-            if vec:
-                print(f"✓ 向量生成成功，维度: {len(vec)}")
-                print(f"前5维: {vec[:5]}")
-            else:
-                print("✗ 向量生成失败")
-                print("提示: 请检查 MINIMAX_API_KEY 环境变量")
-        
-        elif vector_subcommand == "reindex":
-            memory_dir = args.memory_dir if hasattr(args, 'memory_dir') and args.memory_dir else EXTERNAL_MEMORY_DIR
-            print(f"从 {memory_dir} 重新生成向量...")
-            
-            files = []
-            contents = []
-            for f in Path(memory_dir).glob("*.md"):
-                files.append(f.name)
-                try:
-                    contents.append(f.read_text(encoding="utf-8")[:1000])
-                except:
-                    contents.append("")
-            
-            print(f"找到 {len(files)} 个记忆文件")
-            from embedding import add_vectors_batch
-            add_vectors_batch(files, contents)
-        
-        else:
-            print(f"未知子命令: {vector_subcommand}")
-            sys.exit(1)
     
     else:
         print(f"未知命令: {command}")
