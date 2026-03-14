@@ -6,6 +6,44 @@
 
 ## Unreleased (feature)
 
+### English
+- 🎨 feat: Add three-level cascade search (keyword → vector → raw text)
+  - Level 1: Keyword search (existing)
+  - Level 2: Vector semantic search (HuggingFace bge-base-zh-v1.5)
+  - Level 3: Raw text search
+  - Automatic fallback: upper level no results → next level
+- 🧠 feat: Add embedding.py - Vector semantic search module
+  - Support HuggingFace local models (recommended)
+  - Support Ollama local models
+  - Support MiniMax API
+  - Default model: BAAI/bge-base-zh-v1.5 (768 dimensions)
+- 🔧 feat: Add vector management commands
+  - `vector status` - View vector index status
+  - `vector test` - Test vector generation
+  - `vector reindex` - Batch regenerate vectors
+- ✨ feat: Add --embed flag to add command for vector generation
+- 📝 docs: Update AGENTS.md with three-level search and proactive trigger
+- 🐛 fix: Fix score display bug in search results
+
+### 中文
+- 🎨 feat: 添加三级级联搜索（关键词 → 向量 → 原文）
+  - 第1层：关键词搜索（现有）
+  - 第2层：向量语义搜索（HuggingFace bge-base-zh-v1.5）
+  - 第3层：原文全文搜索
+  - 自动降级：上层无结果时自动使用下一层
+- 🧠 feat: 添加 embedding.py - 向量语义搜索模块
+  - 支持 HuggingFace 本地模型（推荐）
+  - 支持 Ollama 本地模型
+  - 支持 MiniMax API
+  - 默认模型：BAAI/bge-base-zh-v1.5（768维）
+- 🔧 feat: 添加向量管理命令
+  - `vector status` - 查看向量索引状态
+  - `vector test` - 测试向量生成
+  - `vector reindex` - 批量重新生成向量
+- ✨ feat: add 命令添加 --embed 参数支持向量生成
+- 📝 docs: 更新 AGENTS.md，添加三级搜索和主动触发
+- 🐛 fix: 修复搜索结果分数显示 bug
+
 ---
 
 ## v1.0.10 (2026-03-13)
