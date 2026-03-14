@@ -24,6 +24,9 @@
 - ✨ feat: Add --embed flag to add command for vector generation
 - 📝 docs: Update AGENTS.md with three-level search and proactive trigger
 - 🐛 fix: Fix score display bug in search results
+- ♻️ refactor: Remove Hook (Agent now intelligently decides when to search)
+  - No more auto-search on session start
+  - Agent judges based on user question content
 
 ### 中文
 - 🎨 feat: 添加三级级联搜索（关键词 → 向量 → 原文）
@@ -41,8 +44,11 @@
   - `vector test` - 测试向量生成
   - `vector reindex` - 批量重新生成向量
 - ✨ feat: add 命令添加 --embed 参数支持向量生成
-- 📝 docs: 更新 AGENTS.md，添加三级搜索和主动触发
+- 📝 docs: 更新 AGENTS.md，添加三级搜索和智能触发
 - 🐛 fix: 修复搜索结果分数显示 bug
+- ♻️ refactor: 删除 Hook（由 Agent 智能判断是否搜索）
+  - 不再自动搜索
+  - Agent 根据问题内容判断
 
 ---
 

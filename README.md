@@ -87,29 +87,19 @@ python3 memory-indexer.py status
    ## 记忆系统（强制规则）
 
    ### 搜索顺序（必须遵守）
-   1. **memory-indexer** - 关键词索引搜索（**最先**）
+   1. **memory-indexer** - 三级级联搜索（**最先**）
    2. **memory_search** - 原始记忆文件搜索
    3. **直接读文件** - 仅当前会话内容
 
-   ### 主动搜索规则
-   当用户提到以下关键词时，**立即主动调用 memory-indexer**：
-   - "找找"、"为什么"、"原因"
-   - "之前"、"记得"
-   - "设置被改动"、"修改"
-   ```
+   ### 主动搜索规则（Agent 智能判断）
+   Agent 根据问题内容主动判断是否搜索：
+   - 用户提到"之前"、"记得"、"有没有"
+   - 用户问"找找"、"为什么"、"原因"
+   - 讨论特定项目/任务时
+   - 不盲目搜索，避免浪费 token
 
 2. **MEMORY.md** - 强制规则：保存/新会话时调用 indexer
 3. **HEARTBEAT.md** - 定期同步 + 会话备份
-
-**手动安装 Hook（新对话自动搜索记忆）：**
-
-```bash
-# 复制 Hook 目录到 OpenClaw
-cp -r hooks/memory-indexer-on-new ~/.openclaw/hooks/
-
-# 重启 Gateway 使其生效
-openclaw gateway restart
-```
 
 ## 快速开始
 

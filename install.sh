@@ -181,20 +181,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "✅ Cron 配置完成（每天 6 点自动同步）"
 fi
 
-# 安装 Hook（新对话自动搜索记忆）
-echo ""
-echo "🪝 安装 Hook (memory-indexer-on-new)..."
-HOOKS_DIR="${HOME}/.openclaw/hooks"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-if [ -d "$SCRIPT_DIR/hooks/memory-indexer-on-new" ]; then
-    mkdir -p "$HOOKS_DIR"
-    cp -rf "$SCRIPT_DIR/hooks/memory-indexer-on-new" "$HOOKS_DIR/"
-    echo "✅ Hook 已安装到: $HOOKS_DIR/memory-indexer-on-new"
-    echo "   重启 Gateway 使其生效: openclaw gateway restart"
-else
-    echo "⚠️ 未找到 Hook 目录，跳过"
-fi
-
 # 完成
 echo ""
 echo "=============================="
@@ -203,6 +189,8 @@ echo ""
 echo "📖 使用方法:"
 echo "  添加记忆:   python3 memory-indexer.py add \"记忆内容\""
 echo "  搜索记忆:   python3 memory-indexer.py search \"关键词\""
+echo "  三级搜索:   python3 memory-indexer.py search \"关键词\"  # 关键词→向量→原文"
+echo "  向量搜索:   python3 memory-indexer.py search \"关键词\" --semantic"
 echo "  同步索引:   python3 memory-indexer.py sync"
 echo "  查看状态:   python3 memory-indexer.py status"
 echo ""
